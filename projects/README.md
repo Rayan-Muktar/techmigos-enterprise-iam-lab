@@ -70,3 +70,8 @@ This project is the foundation for the following implementations:
 ---
 Admin Dashboard
 <img width="1910" height="820" alt="image" src="https://github.com/user-attachments/assets/af0e0a95-6a3d-4aac-bcbf-ae12e213f3ad" />
+## Universal Directory
+The Universal Directory is the centralized identity store used to manage users, groups, and profile attributes. It serves as the foundation for authentication, authorization, and lifecycle management within the environment.
+<img width="1906" height="870" alt="image" src="https://github.com/user-attachments/assets/02573303-2955-40e6-bfef-bb99e9ee839f" />
+
+
