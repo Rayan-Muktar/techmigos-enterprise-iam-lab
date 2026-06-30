@@ -68,10 +68,30 @@ This project is the foundation for the following implementations:
 - System Log Investigation
 
 ---
-##Admin Dashboard
-<img width="1910" height="820" alt="image" src="https://github.com/user-attachments/assets/af0e0a95-6a3d-4aac-bcbf-ae12e213f3ad" />
+## Admin Dashboard
+The Okta Admin Dashboard provides an overview of the organization, including user activity, application integrations, security monitoring, and administrative tasks. This confirms that the Okta Identity Engine tenant has been successfully provisioned and is operational.
+<img width="1912" height="872" alt="image" src="https://github.com/user-attachments/assets/a2e10daf-9b78-401e-9fe1-73114d8a91cb" />
+
+
+---
 ## Universal Directory
 The Universal Directory is the centralized identity store used to manage users, groups, and profile attributes. It serves as the foundation for authentication, authorization, and lifecycle management within the environment.
-<img width="1906" height="870" alt="image" src="https://github.com/user-attachments/assets/02573303-2955-40e6-bfef-bb99e9ee839f" />
+<img width="1911" height="883" alt="image" src="https://github.com/user-attachments/assets/9510df22-d12b-4c4d-92f3-9b76a8985ef4" />
 
+
+---
+## Applications
+The Applications section is where enterprise applications are integrated with Okta using standards such as SAML 2.0, OAuth 2.0, OpenID Connect (OIDC), and Secure Web Authentication (SWA). This is the central location for configuring Single Sign-On (SSO).
+<img width="1891" height="846" alt="image" src="https://github.com/user-attachments/assets/f00b9649-deed-4db6-9e7b-e12dc65101cc" />
+
+---
+## Security
+The Security section is used to configure authentication policies, multifactor authentication (MFA), network zones, behavior detection, and other controls that protect user access.
+<img width="1852" height="882" alt="image" src="https://github.com/user-attachments/assets/a27ef7b9-a0a4-4796-a20d-b4f9afd8774b" />
+
+---
+
+## Reports and System Log
+The System Log records authentication events, administrative actions, policy evaluations, and application activity. It is an essential tool for monitoring, auditing, and troubleshooting the Okta environment.
+<img width="1859" height="881" alt="image" src="https://github.com/user-attachments/assets/b6655e06-2fb5-43f7-828f-1753508b7d9f" />
 
