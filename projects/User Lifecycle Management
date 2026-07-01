@@ -6,7 +6,7 @@ This module demonstrates how user identities are managed throughout their lifecy
 
 ## Objective
 
-Implement and manage the complete lifecycle of enterprise users, from account creation to deactivation, following IAM best practices.
+Implement and manage the full lifecycle of enterprise users, from account creation through deactivation, in line with IAM best practices.
 
 ---
 
