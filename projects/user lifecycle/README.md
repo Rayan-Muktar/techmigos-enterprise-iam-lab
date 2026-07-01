@@ -59,8 +59,14 @@ I managed users' attributes
 ---
 
 ### Group Assignment
+<img width="1341" height="773" alt="image" src="https://github.com/user-attachments/assets/27595c90-056f-4db7-a383-887125d8c02f" />
 
-*(Insert Screenshot)*
+<img width="901" height="767" alt="image" src="https://github.com/user-attachments/assets/4cfb79fc-0f70-4dd2-98f4-5413b9a57e01" />
+
+<img width="1117" height="752" alt="image" src="https://github.com/user-attachments/assets/7edcb54f-a03c-41bd-b949-d8cb258acb49" />
+
+
+
 
 ---
 
