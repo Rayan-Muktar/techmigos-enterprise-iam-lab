@@ -165,6 +165,10 @@ Repeated multiple login tests until the SAML assertion was successfully accepted
 ### SAML Settings
 
 <img width="1695" height="524" alt="image" src="https://github.com/user-attachments/assets/33e0dfa1-4b15-4101-b68a-89cebde91c80" />
+<img width="1900" height="984" alt="image" src="https://github.com/user-attachments/assets/32c36c71-a66a-4e02-a877-eafd43056e59" />
+<img width="1697" height="802" alt="image" src="https://github.com/user-attachments/assets/8ada42e0-9465-49f4-bef0-662283a2ce48" />
+
+
 
 
 ---
