@@ -62,6 +62,8 @@ Configured the Zendesk subdomain and application settings.
 
 📷 **Screenshot**
 
+<img width="1913" height="983" alt="image" src="https://github.com/user-attachments/assets/27b1a8e4-de26-4c6e-93aa-8d54f1c60bf3" />
+
 > <img width="732" height="784" alt="image" src="https://github.com/user-attachments/assets/844f5243-e88d-43b5-8099-6a2d412a51ce" />
 <img width="717" height="746" alt="image" src="https://github.com/user-attachments/assets/a6810421-3d30-4894-89bb-d228c82a08ad" />
 
@@ -79,11 +81,13 @@ Generated:
 
 📷 **Screenshot**
 
-> Insert image here
+> <img width="571" height="748" alt="image" src="https://github.com/user-attachments/assets/7971074f-1c33-41e6-a34b-64392a7dbc93" />
+ 
+<img width="1025" height="601" alt="image" src="https://github.com/user-attachments/assets/24700d50-3794-4e8c-a0cd-d25955e0fb21" />
 
-```
-images/03-okta-saml-settings.png
-```
+
+
+
 
 ---
 
