@@ -121,13 +121,9 @@ Redirected users to authenticate through Okta.
 
 📷 **Screenshot**
 
-> Insert image here
 
-```
-images/05-team-member-authentication.png
-```
+<img width="861" height="133" alt="image" src="https://github.com/user-attachments/assets/07f847ab-37d2-4060-9e76-1dd1c57e3380" />
 
----
 
 # Step 6 - Activate SAML
 
