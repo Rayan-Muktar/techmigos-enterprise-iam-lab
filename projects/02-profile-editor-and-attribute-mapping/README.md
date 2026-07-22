@@ -1,6 +1,10 @@
-# 📝 TechMigos Enterprise IAM Lab | Profile Editor & Attribute Mapping
+# 📝 Profile Editor & Attribute Mapping
 
-This project demonstrates how Okta's Profile Editor and Attribute Mapping are used to manage user attributes and synchronize identity information between Okta and connected applications.
+## Overview
+
+This project demonstrates how Okta's **Profile Editor** and **Attribute Mapping** are used to manage user attributes and synchronize identity information between Okta and connected applications.
+
+It builds directly on the [Okta Organization Setup](../01-okta-organization-setup) project, using that tenant as the foundation for attribute governance.
 
 ---
 
@@ -10,16 +14,127 @@ Configure and validate attribute mappings to ensure accurate identity data is sh
 
 ---
 
-## Tasks Completed
+## Environment
 
-- Reviewed the Okta User Profile
-- Explored the Profile Editor
-- Created custom profile attributes
-- Mapped Okta user attributes
-- Configured application attribute mappings
-- Validated inbound and outbound mappings
-- Tested profile synchronization
-- Verified mapped attributes
+| Component | Value |
+|-----------|-------|
+| Platform | Okta Identity Engine |
+| Organization | TechMigos Enterprise |
+| Source Profile | Okta User Profile |
+| Connected Apps | Salesforce.com, Zendesk |
+
+---
+
+## Step 1 — Reviewing the Okta User Profile
+
+Before making changes, I reviewed the default Okta User Profile to understand which attributes exist out of the box (name, email, login, etc.) and which would need to be added for enterprise use cases.
+
+![Okta User Profile](./screenshots/01-okta-user-profile.png)
+
+---
+
+## Step 2 — Exploring the Profile Editor
+
+I opened the Profile Editor under Directory to see how Okta separates the **Okta User Profile** (source of truth) from **Application User Profiles** (per-app attribute sets).
+
+![Profile Editor](./screenshots/02-profile-editor.png)
+
+---
+
+## Step 3 — Creating Custom Attributes
+
+Standard attributes don't cover every enterprise need, so I added custom attributes to the Okta User Profile to support downstream use cases.
+
+![Custom Attributes](./screenshots/03-custom-attributes.png)
+
+---
+
+## Step 4 — Mapping Okta Attributes to Applications
+
+I configured bidirectional attribute mappings for both Salesforce and Zendesk, defining how identity data flows in each direction.
+
+### Okta → Salesforce (Outbound)
+
+| Okta Attribute | Salesforce Attribute | Mapping Type |
+|----------------|----------------------|--------------|
+| `user.firstName` | `firstName` | Push (always applied) |
+| `user.lastName` | `lastName` | Push (always applied) |
+| `user.email` | `email` | Push (always applied) |
+
+![Okta to Salesforce Mapping](./screenshots/04-okta-to-salesforce.png)
+
+### Salesforce → Okta (Inbound)
+
+| Salesforce Attribute | Okta Attribute | Mapping Type |
+|----------------------|-----------------|--------------|
+| `appuser.firstName` | `firstName` | Apply on user creation only |
+| `appuser.lastName` | `lastName` | Apply on user creation only |
+| `appuser.email` | `email` | Apply on user creation only |
+
+![Salesforce to Okta Mapping](./screenshots/05-salesforce-to-okta.png)
+
+### Zendesk → Okta (Inbound)
+
+| Zendesk Attribute | Okta Attribute | Mapping Type |
+|--------------------|-----------------|--------------|
+| `appuser.userName` | `login` | Uses default Okta username setting |
+| `appuser.firstName` | `firstName` | Apply on user creation only |
+| `appuser.lastName` | `lastName` | Apply on user creation only |
+| `appuser.email` | `email` | Apply on user creation only |
+
+![Zendesk to Okta Mapping](./screenshots/06-zendesk-to-okta.png)
+
+### Okta → Zendesk (Outbound)
+
+| Okta Attribute | Zendesk Attribute | Mapping Type |
+|-----------------|---------------------|--------------|
+| `user.firstName` | `firstName` | Apply on user creation only |
+| `user.lastName` | `lastName` | Apply on user creation only |
+| — | `userName` | Set by Zendesk |
+
+![Okta to Zendesk Mapping](./screenshots/07-okta-to-zendesk.png)
+
+**Note on Mapping Types:**
+Okta distinguishes between two mapping behaviors:
+- **Push (green arrow)** — the attribute is continuously synced; any change in the source updates the target every time
+- **Apply on creation (yellow key)** — the attribute is only set once, when the user account is first created, and won't overwrite existing values afterward
+
+I used push mappings for Okta → Salesforce to keep Salesforce continuously current with Okta as the source of truth, while inbound mappings from both apps use creation-only behavior to avoid Okta's profile being overwritten by app-side edits after the initial sync.
+
+---
+
+## Step 5 — Validating Inbound and Outbound Mappings
+
+I tested the configured mappings to confirm attribute values flowed correctly in both directions, checking for:
+- Correct data type matching
+- No attribute value loss during transformation
+- Consistent formatting across applications
+
+![Mapping Validation](./screenshots/08-mapping-validation.png)
+
+---
+
+## Step 6 — Testing Profile Synchronization
+
+To confirm the mappings worked end-to-end, I updated a user's attribute in Okta and verified the change synchronized correctly to the connected application's profile.
+
+![Profile Sync Test](./screenshots/09-profile-sync-test.png)
+
+---
+
+## Design Decisions
+
+**Why maintain Okta as the single source of truth?**
+
+Rather than letting each application manage its own copy of user attributes independently, all identity data flows from the Okta User Profile outward. This avoids the classic enterprise problem of conflicting user data across systems — if HR data changes, it updates once in Okta and propagates everywhere, instead of requiring manual updates in every connected app.
+
+**Why use push mappings outbound but creation-only mappings inbound?**
+
+Push mappings to Salesforce keep the app continuously in sync with Okta as changes happen. Inbound mappings from Salesforce and Zendesk are set to apply only on user creation, so that app-side edits after initial provisioning don't unintentionally overwrite the Okta profile — preserving Okta's role as the authoritative source.
+
+**Why use Okta Expression Language (OEL) instead of direct 1:1 mapping in some cases?**
+
+Some attributes needed transformation rather than a straight copy — for example, combining first and last name into a display name, or formatting a field differently for a specific app's requirements. OEL let me handle these transformations at the mapping layer rather than storing duplicate or reformatted data in the base profile.
 
 ---
 
@@ -29,11 +144,11 @@ Configure and validate attribute mappings to ensure accurate identity data is sh
 - Okta User Profile
 - Application User Profile
 - Custom Attributes
-- Attribute Mapping
+- Attribute Mapping (push vs. apply-on-creation)
 - Profile Editor
 - Source of Truth
 - Data Transformation
-- Expression Language (OEL)
+- Okta Expression Language (OEL)
 
 ---
 
@@ -41,59 +156,24 @@ Configure and validate attribute mappings to ensure accurate identity data is sh
 
 - Universal Directory Administration
 - Profile Editor Configuration
-- Attribute Mapping
+- Bidirectional Attribute Mapping
 - Identity Synchronization
 - Okta Expression Language (OEL)
 - Enterprise Identity Management
 
 ---
 
-## Architecture
+## What I'd Do Differently at Enterprise Scale
 
-*(Insert architecture diagram here)*
-
----
-
-## Evidence
-
-### Okta User Profile
-
-<img width="1051" height="796" alt="image" src="https://github.com/user-attachments/assets/ee6760b0-0572-458a-a2d7-3f36580b4a0b" />
-
+- Document a formal **attribute dictionary** before creating custom attributes, so naming stays consistent as more applications are added
+- Use **group-based attribute push policies** rather than mapping every attribute to every app by default
+- Build automated validation tests for mapping changes, rather than manually checking each sync
+- Standardize on push vs. creation-only mapping rules across all apps from the start, documented as a policy rather than decided per-integration
 
 ---
 
-### Profile Editor
-
-<img width="1904" height="841" alt="image" src="https://github.com/user-attachments/assets/406ce839-63b5-41de-8056-02939652586b" />
-
-<img width="1073" height="749" alt="image" src="https://github.com/user-attachments/assets/937f1550-aef2-48e8-837a-6b1f62bf7e75" />
-
-
-
----
-
-### Custom Attributes
-
-<img width="1156" height="637" alt="image" src="https://github.com/user-attachments/assets/aa6ef4ba-5596-4d17-a3f4-c74b075bf8a8" />
-
-
----
-
-### Attribute Mapping
-
-<img width="1042" height="908" alt="image" src="https://github.com/user-attachments/assets/f391af74-82b0-40ab-b4e8-5975a4066505" />
-
-
----
-
-### Mapping Preview
-
-<img width="892" height="889" alt="image" src="https://github.com/user-attachments/assets/eadf82f9-d58a-45af-bf35-73f2109a090f" />
-
-<img width="1130" height="659" alt="image" src="https://github.com/user-attachments/assets/3c010860-41ce-4516-ac06-7e2aee537f26" />
-
--------------------------------------------------------------------------------------------------------------------------------------------
 ## Outcome
 
-Successfully configured and validated profile attributes and attribute mappings within Okta Identity Engine, ensuring consistent identity data across connected applications while following enterprise IAM best practices.
+Successfully configured and validated bidirectional profile attribute mappings within Okta Identity Engine for both Salesforce and Zendesk, ensuring consistent identity data across connected applications while following enterprise IAM best practices.
+
+This attribute foundation now supports every downstream application integration in this repository, including SAML federation to Salesforce and Zendesk.
