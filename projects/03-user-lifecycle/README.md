@@ -1,95 +1,68 @@
 # 👤 User Lifecycle Management
 
-This module demonstrates how user identities are managed throughout their lifecycle using Okta Identity Engine.
-
----
+This one covers the full lifecycle of a user account in Okta — from the moment someone's created to the point they're deleted for good.
 
 ## Objective
 
-Implement and manage the complete lifecycle of enterprise users, from account creation to deactivation, following IAM best practices.
+Manage users end-to-end the way an IT admin actually would: onboarding, profile updates, group/app assignment, and eventually offboarding (suspend, deactivate, delete).
 
----
+## What I did
 
-## Tasks Completed
+Started by creating a handful of test users manually to get a feel for the create flow, then moved into managing them through their lifecycle — updating profile fields, adding them to groups, assigning apps, and eventually walking them through suspension and deactivation.
+
+I also went back and built out **group rules** so that group assignment isn't manual anymore. Instead of adding people to groups by hand, users get assigned automatically based on their `department` or `title` attribute — the same attributes set up in [Profile Editor & Attribute Mapping](../02-profile-editor-and-attribute-mapping). That's really the point of doing attribute work first: it's what makes rules like this possible.
+
+- If `user.department` equals `Finance` → assigned to TechMigos Finance Group
+- If `user.title` equals `Cloud Professional` → assigned to TechMigos Cloud Professionals
+- If `user.title` equals `Human Resource Associate` → assigned to TechMigos HR Group
+- If `user.title` equals `Marketing Professional` → assigned to TechMigos Marketing Group
+- If `user.login` contains `@oktacertified.com` → assigned to TechMigos Okta Admins
+
+![Group Rules](./screenshots/group-rules.png)
+
+Each rule also has an `Except` condition available, which I left empty for this lab — but in a real org that's where you'd exclude specific people from a rule that would otherwise catch them. A VP with the title "Marketing Professional," for example, might need to skip the standard Marketing group rule if they're meant to sit in a different group entirely.
+
+I ended up disabling the Okta Admins rule after testing it (currently marked Inactive) since it was matching more accounts than I wanted while I was still testing — a good reminder that rule conditions need to be scoped carefully before going live, not just logically correct.
+
+![Groups Overview](./screenshots/groups-overview.png)
+
+This is really the piece that ties lifecycle management to something real — in an actual company, nobody's manually dragging 500 employees into the right groups. The group rules do that work the moment HR data changes a person's title or department.
+
+## Steps covered
 
 - Created new users
 - Updated user profiles
-- Assigned users to groups
+- Built group rules for automatic, attribute-based group assignment
 - Assigned applications
-- Suspended user accounts
-- Reactivated user accounts
-- Deactivated user accounts
-- Deleted user accounts
-
----
-
-## Skills Demonstrated
-
-- User Provisioning
-- User Administration
-- Lifecycle Management
-- Group Management
-- Application Assignment
-- Okta Identity Engine
-
----
+- Suspended accounts
+- Reactivated accounts
+- Deactivated accounts
+- Deleted accounts
 
 ## Screenshots
 
-### User Directory
-<img width="1874" height="876" alt="image" src="https://github.com/user-attachments/assets/fa99a37e-ba39-437b-bdba-3ef84333b05c" />
+![User Directory](./screenshots/user-directory.png)
+*User directory showing all provisioned accounts*
 
+![Create User](./screenshots/create-user.png)
+*Creating a new user in Okta*
 
+![User Profile](./screenshots/user-profile.png)
+*Editing a user's profile attributes*
 
+![Application Assignment](./screenshots/app-assignment.png)
+*Assigning applications to a user*
 
----
+![Suspend User](./screenshots/suspend-user.png)
+*Suspending a user account*
 
-### Create User
+![Deactivate User](./screenshots/deactivate-user.png)
+*Deactivating a user account*
 
-<img width="1368" height="769" alt="image" src="https://github.com/user-attachments/assets/f4ab47ee-7621-4e3b-b74e-01f0be5ad318" />
+## Skills demonstrated
 
-
----
-
-### User Profile
-I managed users' attributes
-<img width="1262" height="825" alt="image" src="https://github.com/user-attachments/assets/ee1c2001-c5b9-4025-b8f3-e3afa090f64e" />
-
-
----
-
-### Group Assignment
-<img width="1341" height="773" alt="image" src="https://github.com/user-attachments/assets/27595c90-056f-4db7-a383-887125d8c02f" />
-
-<img width="901" height="767" alt="image" src="https://github.com/user-attachments/assets/4cfb79fc-0f70-4dd2-98f4-5413b9a57e01" />
-
-<img width="1117" height="752" alt="image" src="https://github.com/user-attachments/assets/7edcb54f-a03c-41bd-b949-d8cb258acb49" />
-
-
-
-
----
-
-### Application Assignment
-This is where users are assigned to applications
-<img width="902" height="696" alt="image" src="https://github.com/user-attachments/assets/6c8ec946-5376-43b6-b0cb-62476c334205" />
-
-
----
-### Suspend User
-
-<img width="924" height="501" alt="image" src="https://github.com/user-attachments/assets/80e9743c-c577-4244-956b-a2cd4e3ec2c9" />
-
-
----
-### Deactivate User
-
-<img width="1396" height="775" alt="image" src="https://github.com/user-attachments/assets/17432930-6a7b-4168-a0de-2f2cbff34a1b" />
-
-
----
-
+User provisioning, group rule design, attribute-based access assignment, application assignment, and the full account lifecycle (create → suspend → reactivate → deactivate → delete).
 
 ## Outcome
 
-Successfully managed the complete user lifecycle within Okta Identity Engine, demonstrating enterprise identity administration from user onboarding through offboarding.
+Managed the complete user lifecycle in Okta, and moved group assignment from a manual process to an automated, attribute-driven one using group rules. That second part is the difference between "I can click buttons in Okta" and "I understand how this scales past a handful of test users."
