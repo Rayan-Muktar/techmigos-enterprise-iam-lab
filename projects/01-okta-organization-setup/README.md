@@ -41,7 +41,6 @@ Tasks completed:
 - Signed in to the Okta Admin Console
 
 📷 Screenshot
-_Added image here_
 <img width="1341" height="778" alt="image" src="https://github.com/user-attachments/assets/1b6ed98b-94f1-4323-b663-6524a164f32f" />
 
 
@@ -52,7 +51,6 @@ _Added image here_
 After activating the organization, I logged into the Admin Console for the first time to get oriented before making any configuration changes.
 
 📷 Screenshot
-_Added image here_
 <img width="1540" height="885" alt="image" src="https://github.com/user-attachments/assets/8a3844c8-bfd2-4c2f-9acc-32e0403f70c5" />
 
 
@@ -70,7 +68,6 @@ Changes included:
 The organization was branded as **TechMigos Enterprise**.
 
 📷 Screenshot
-_Added image here_
 <img width="1298" height="879" alt="image" src="https://github.com/user-attachments/assets/7f2a2c52-ecba-46ab-909f-53fe56754e6b" />
 
 
@@ -81,10 +78,7 @@ _Added image here_
 A custom company logo was designed and uploaded to represent the TechMigos Enterprise environment. This gives the tenant a professional appearance similar to a production deployment.
 
 📷 Screenshot
-_Added image here_
-
 <img width="621" height="654" alt="image" src="https://github.com/user-attachments/assets/bef0292f-aa16-4e13-84c3-38c087a25b08" />
-
 <img width="619" height="680" alt="image" src="https://github.com/user-attachments/assets/96ec52cf-e0b8-4bec-9a4d-d8647471f171" />
 <img width="602" height="637" alt="image" src="https://github.com/user-attachments/assets/b8479f50-e7d3-461e-8a5e-0a372479e768" />
 
@@ -106,8 +100,6 @@ With branding in place, I reviewed each major administrative section to understa
 - **System Log** — audit trail for every identity event in the org
 
 📷 Screenshot
-_Added image here_
-
 <img width="733" height="519" alt="image" src="https://github.com/user-attachments/assets/ec7b4eab-4bf9-496c-acf8-fa215eb99ed6" />
 
 
@@ -125,7 +117,6 @@ To simulate real enterprise access governance, I built a group structure spannin
 - **Default:** Everyone (all org users)
 
 📷 Screenshot
-_Added image here_
 <img width="917" height="790" alt="image" src="https://github.com/user-attachments/assets/c0106f71-37cf-4e30-bc18-717719dbbaf0" />
 
 
