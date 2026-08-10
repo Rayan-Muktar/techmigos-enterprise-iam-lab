@@ -78,6 +78,8 @@ The organization was branded as **TechMigos Enterprise**.
 A custom company logo was designed and uploaded to represent the TechMigos Enterprise environment. This gives the tenant a professional appearance similar to a production deployment.
 
 📷 Screenshot
+
+
 <img width="621" height="654" alt="image" src="https://github.com/user-attachments/assets/bef0292f-aa16-4e13-84c3-38c087a25b08" />
 <img width="619" height="680" alt="image" src="https://github.com/user-attachments/assets/96ec52cf-e0b8-4bec-9a4d-d8647471f171" />
 <img width="602" height="637" alt="image" src="https://github.com/user-attachments/assets/b8479f50-e7d3-461e-8a5e-0a372479e768" />
@@ -99,7 +101,9 @@ With branding in place, I reviewed each major administrative section to understa
 - **Reports** — usage and access reporting
 - **System Log** — audit trail for every identity event in the org
 
+
 📷 Screenshot
+
 <img width="733" height="519" alt="image" src="https://github.com/user-attachments/assets/ec7b4eab-4bf9-496c-acf8-fa215eb99ed6" />
 
 
