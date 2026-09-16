@@ -1,6 +1,10 @@
+# TechMigos Enterprise IAM & PAM Lab
+
+An enterprise-style identity and privileged-access portfolio built around workforce IAM, federation, lifecycle automation, Active Directory, and CyberArk Privileged Access Management.
+
 ## Projects Index
 
-This lab is built as six sequential, interconnected projects — each one documents a phase of standing up an enterprise IAM environment, and each builds on the attributes, groups, and policies established in the ones before it.
+The IAM portion is built as six sequential, interconnected projects — each documents a phase of standing up an enterprise identity environment and builds on the attributes, groups, and policies established before it.
 
 | # | Project | What it demonstrates | Key skills |
 |---|---------|----------------------|------------|
@@ -10,13 +14,20 @@ This lab is built as six sequential, interconnected projects — each one docume
 | 04 | [SAML — Salesforce](./projects/04-saml-salesforce) | Federated SSO with real troubleshooting included | SAML 2.0, IdP/SP trust, certificate exchange |
 | 05 | [SAML — Zendesk](./projects/05-saml-zendesk) | A second SAML integration, reinforcing the pattern | SAML 2.0, multi-app federation |
 | 06 | [Security Policies](./projects/06-security-policies) | Authentication and access policy design | MFA, session policy, adaptive access |
+| 07 | [CyberArk Privileged Access Management](./cyberark-pam) | Protecting Windows privileged accounts and brokering administrative RDP sessions through PSM | CyberArk Vault, PVWA, CPM, PSM, Safes, PSM-RDP, AD, PowerShell troubleshooting |
 
-**Read them in order** — each project assumes the Okta org, attributes, and groups from the ones before it. Project 01 is the foundation; everything downstream depends on it.
+## CyberArk PAM extension
+
+The CyberArk portion extends the lab from workforce identity into privileged identity security. It includes a dedicated Windows administrator Safe, privileged domain-account onboarding, Active Directory group-based target authorization, PSM-RDP, PSM service/port validation, and a real troubleshooting case involving the PSM Recorder.
+
+Start here: **[TechMigos CyberArk PAM Lab](./cyberark-pam/README.md)**
 
 ### Tech stack
 
-`Okta Identity Engine` · `SAML 2.0` · `Active Directory` · `PowerShell` · `MFA` · `SCIM` (in progress)
+`Okta Identity Engine` · `CyberArk PAM` · `PVWA` · `CPM` · `PSM` · `Active Directory` · `PowerShell` · `SAML 2.0` · `MFA` · `SCIM` (in progress)
 
 ### What ties it together
 
-The attributes configured in project 02 drive the automated group rules in project 03, which in turn control who gets access to the applications federated in projects 04–05, all governed by the policies in project 06. It's built to read as one connected identity architecture, not six disconnected demos.
+The Okta projects demonstrate workforce identity: profiles, lifecycle, federation, and access policies. The CyberArk project adds privileged access management for administrative identities and Windows infrastructure. Together, the lab demonstrates the difference between granting a workforce identity access to applications and controlling how privileged credentials are stored, authorized, used, and monitored.
+
+> All systems, identities, hostnames, and private IP addresses documented here belong to an isolated personal training environment. Secrets and authentication material are intentionally excluded.
