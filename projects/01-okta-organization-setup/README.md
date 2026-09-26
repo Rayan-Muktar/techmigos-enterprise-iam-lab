@@ -1,177 +1,83 @@
-# 🏢 Okta Organization Setup
+# 01 — Okta Organization & Group Architecture
 
-## Overview
+## Business requirement
 
-This project documents the initial setup and configuration of the **TechMigos Enterprise** Okta Identity Engine (OIE) tenant.
-
-The objective was to create a clean enterprise IAM environment that would later support user lifecycle management, authentication policies, SAML integrations, and identity governance.
-
----
+TechMigos needs an Okta Identity Engine tenant that can support workforce identities without relying on inconsistent manual assignments or excessive administrator privilege.
 
 ## Objectives
 
-- Create an Okta Identity Engine organization
-- Configure the administrator account
-- Customize the organization branding
-- Explore the Okta Admin Console
-- Design a realistic group structure for access governance
-- Prepare the tenant for enterprise IAM deployments
-
----
+- Configure and brand the Okta tenant
+- Establish administrative separation of duties
+- Create a scalable group model
+- Apply consistent naming and descriptions
+- Prepare the tenant for attribute-driven automation
+- Verify administrative activity in the System Log
 
 ## Environment
 
-| Component | Value |
-|-----------|-------|
+| Component | Configuration |
+|---|---|
 | Platform | Okta Identity Engine |
 | Organization | TechMigos Enterprise |
-| Environment | Developer Tenant |
-| Administrator | Super Admin |
+| Environment | Personal developer tenant |
+| Primary administration | Super Administrator |
+| Identity directory | Okta Universal Directory |
 
----
+## Group architecture
 
-## Step 1 — Creating the Organization
+The original tenant used department, function, location, and administrative groups. The rebuild standardizes these into clear categories:
 
-The project began by creating a new Okta Identity Engine tenant.
+| Category | Examples | Purpose |
+|---|---|---|
+| Department | `DEPT-Finance`, `DEPT-Marketing`, `DEPT-HR`, `DEPT-IT` | Represent the organizational structure |
+| Role | `ROLE-Helpdesk`, `ROLE-Cloud`, `ROLE-Cybersecurity` | Represent job functions across departments |
+| Administration | `ADMIN-Okta-Helpdesk`, `ADMIN-Okta-App`, `ADMIN-Okta-ReadOnly` | Support delegated administration |
+| Location | `LOC-New-York` | Support location-aware access decisions |
+| Employment type | `TYPE-Employee`, `TYPE-Contractor`, `TYPE-Intern` | Support lifecycle and policy differences |
 
-Tasks completed:
-- Registered a new Okta developer organization
-- Verified the administrator email
-- Activated the tenant
-- Signed in to the Okta Admin Console
+## Administrative model
 
-📷 Screenshot
-<img width="1341" height="778" alt="image" src="https://github.com/user-attachments/assets/1b6ed98b-94f1-4323-b663-6524a164f32f" />
+- Reserve Super Administrator for a minimal number of accounts.
+- Use delegated roles for routine support and configuration.
+- Separate help-desk, application, reporting, and policy administration.
+- Assign administrative roles through controlled groups where supported.
+- Review administrator changes and failed actions in the System Log.
 
+## Implementation summary
 
----
+1. Activated the Identity Engine tenant and verified administrator access.
+2. Applied TechMigos branding and organization settings.
+3. Reviewed Directory, Security, Reports, and System Log functions.
+4. Created the initial department, function, location, and administrator groups.
+5. Documented a cleaner naming model for the new tenant.
+6. Identified broad administrator membership as a least-privilege risk.
 
-## Step 2 — First Login
+## Validation tests
 
-After activating the organization, I logged into the Admin Console for the first time to get oriented before making any configuration changes.
+| Test | Expected result |
+|---|---|
+| Create a department group with description | Group appears with clear ownership and purpose |
+| Assign a user to a non-admin group | User gains only the intended membership |
+| Test delegated help-desk access | Support tasks work while policy and Super Admin functions remain unavailable |
+| Review a group or admin change | Matching event appears in the System Log |
+| Attempt an unauthorized admin action | Action is blocked and logged |
 
-📷 Screenshot
-<img width="1540" height="885" alt="image" src="https://github.com/user-attachments/assets/8a3844c8-bfd2-4c2f-9acc-32e0403f70c5" />
+## Key design decisions
 
+**Groups represent one purpose.** Department membership, administrator authority, and application access should not be combined into a single group.
 
----
+**Administrative access follows least privilege.** Routine help-desk work does not justify Super Administrator access.
 
-## Step 3 — Enterprise Branding
-
-To simulate a real-world organization, I customized the tenant branding.
-
-Changes included:
-- Organization Name
-- Company Logo
-- Dashboard Branding
-
-The organization was branded as **TechMigos Enterprise**.
-
-📷 Screenshot
-<img width="1298" height="879" alt="image" src="https://github.com/user-attachments/assets/7f2a2c52-ecba-46ab-909f-53fe56754e6b" />
-
-
----
-
-## Step 4 — Uploading the Company Logo
-
-A custom company logo was designed and uploaded to represent the TechMigos Enterprise environment. This gives the tenant a professional appearance similar to a production deployment.
-
-📷 Screenshot
-
-
-<img width="621" height="654" alt="image" src="https://github.com/user-attachments/assets/bef0292f-aa16-4e13-84c3-38c087a25b08" />
-<img width="619" height="680" alt="image" src="https://github.com/user-attachments/assets/96ec52cf-e0b8-4bec-9a4d-d8647471f171" />
-<img width="602" height="637" alt="image" src="https://github.com/user-attachments/assets/b8479f50-e7d3-461e-8a5e-0a372479e768" />
-
-
-
-
----
-
-## Step 5 — Exploring the Admin Console
-
-With branding in place, I reviewed each major administrative section to understand what it governs before touching configuration elsewhere in the lab:
-
-- **Dashboard** — org health, active users, system status at a glance
-- **Directory** — People, Groups, Devices, Profile Editor, Directory Integrations, Profile Sources
-- **Applications** — where SSO integrations (Salesforce, Zendesk, Slack) would later be configured
-- **Security** — authentication policies, MFA enrollment, network zones
-- **Workflow** — automation and lifecycle event triggers
-- **Reports** — usage and access reporting
-- **System Log** — audit trail for every identity event in the org
-
-
-📷 Screenshot
-
-<img width="733" height="519" alt="image" src="https://github.com/user-attachments/assets/ec7b4eab-4bf9-496c-acf8-fa215eb99ed6" />
-
-
----
-
-## Step 6 — Designing the Group Structure
-
-To simulate real enterprise access governance, I built a group structure spanning department, function, and administrative tiers rather than relying on a single flat group list.
-
-**Groups created:**
-- **Department-based:** TechMigos Finance Group, TechMigos Marketing Group, TechMigos HR Group, TechMigos IT Group
-- **Function-based:** TechMigos Help Support, TechMigos Cloud Professionals, TechMigos CyberOps
-- **Administrative tiers:** TechMigos Administrators, TechMigos Okta Admins, Okta Administrators
-- **Location-based:** New York Office
-- **Default:** Everyone (all org users)
-
-📷 Screenshot
-<img width="917" height="790" alt="image" src="https://github.com/user-attachments/assets/c0106f71-37cf-4e30-bc18-717719dbbaf0" />
-
-
----
-
-## Design Decisions
-
-**Why three separate admin groups instead of one?**
-
-Rather than granting broad admin access through a single group, I split administrative access into three tiers:
-- **Okta Administrators** — the built-in, Okta-managed group reserved for top-level org administrators
-- **TechMigos Okta Admins** — day-to-day Okta configuration access (apps, policies, groups)
-- **TechMigos Administrators** — broader organizational admin role, separate from Okta-specific permissions
-
-This reflects a real-world **separation of duties** principle: not everyone who needs administrative visibility should have the same level of platform access. It reduces blast radius if any single account is compromised and creates a clearer audit trail of who can do what.
-
-**Why separate department, function, and location groups?**
-
-Department groups (Finance, HR, Marketing, IT) map naturally to org structure, but function-based groups (Help Support, CyberOps, Cloud Professionals) capture cross-department roles that don't fit a department model — someone on the Help Support team might sit in any department. Keeping these as separate group types makes downstream SAML/attribute-based access rules far easier to write than trying to force everything into one hierarchy.
-
----
-
-## Skills Demonstrated
-
-- Okta Identity Engine (OIE) tenant deployment
-- Enterprise organization branding
-- Admin Console navigation and structure
-- Group design for department, function, and administrative access
-- Separation-of-duties principles applied to admin roles
-- Identity infrastructure planning
-
----
-
-## What I'd Do Differently at Enterprise Scale
-
-- Use **group rules** (dynamic, attribute-based membership) instead of manually assigning users to groups, so group membership updates automatically as HR attributes change
-- Integrate with a real HR system (e.g., Workday) as the source of truth rather than manually created test users
-- Apply **naming conventions and group descriptions as a governance standard** from day one, rather than cleaning them up after the fact
-- Document a formal **RBAC matrix** mapping each group to the specific permissions/applications it grants, before creating any groups
-
----
+**Naming is part of governance.** Prefixes make group intent understandable during reviews and troubleshooting.
 
 ## Outcome
 
-The TechMigos Enterprise Okta tenant was successfully deployed, branded, and structured with a realistic group hierarchy. This organization now serves as the foundation for every other project in this repository:
+The tenant now has a documented foundation for profile governance, lifecycle automation, and policy enforcement. The next project defines the attributes that drive this group architecture.
 
-- User Lifecycle Management
-- Profile Editor & Attribute Mapping
-- SAML Single Sign-On (Salesforce, Zendesk)
-- Security Policies
-- MFA and Network Zones
-- Authentication Policies
+## Production improvements
 
-Setting up an Okta organization is the first step in building an enterprise IAM environment — the decisions made here about branding, admin separation, and group design directly shape how every downstream policy and integration gets applied.
+- Connect an HR system as the authoritative source
+- Maintain a formal role and entitlement matrix
+- Review administrator assignments regularly
+- Use break-glass accounts with monitored emergency procedures
+- Export System Log events to a SIEM
