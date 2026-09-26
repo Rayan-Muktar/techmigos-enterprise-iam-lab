@@ -1,66 +1,60 @@
-# TechMigos Enterprise IAM Lab
+# TechMigos Enterprise Okta IAM Lab
 
-An enterprise-style identity and access management portfolio demonstrating workforce identity administration, profile management, lifecycle automation, group-based access, and security-policy design.
+A hands-on Okta Identity Engine portfolio demonstrating workforce identity administration, Universal Directory, lifecycle automation, group-based access, delegated administration, and adaptive security policies.
 
-## Project objective
+## Business scenario
 
-TechMigos is a simulated organization used to build and document realistic IAM workflows. The lab focuses on controls an identity team would operate in production: identity data quality, least-privilege access, automated joiner-mover-leaver processes, administrative separation of duties, and strong authentication.
+TechMigos is a simulated enterprise rebuilding its identity environment around Okta. The goal is to replace manual identity administration with standardized profiles, automated access decisions, least-privilege administration, and measurable security controls.
 
-## Portfolio projects
+## Okta project portfolio
 
-| Project | Business outcome | Skills demonstrated |
+| Project | Business problem | Okta capabilities |
 |---|---|---|
-| [Okta Organization Setup](projects/01-okta-organization-setup) | Establishes the workforce identity tenant, administrative model, and group structure | Okta Identity Engine, delegated administration, group design |
-| [Profile Editor & Attribute Mapping](projects/02-profile-editor-and-attribute-mapping) | Creates consistent identity profiles and application-ready attributes | Universal Directory, custom attributes, Okta Expression Language, source-of-truth design |
-| [User Lifecycle Management](projects/03-user-lifecycle) | Automates access changes across joiner, mover, and leaver events | Group rules, provisioning logic, lifecycle states, access removal |
-| [Security Policies](projects/06-security-policies) | Applies stronger controls according to user, resource, and risk context | MFA, authentication policies, session controls, least privilege |
+| [01 — Organization & Group Architecture](projects/01-okta-organization-setup) | Establish a governed tenant and scalable access structure | Identity Engine, groups, admin roles, System Log |
+| [02 — Universal Directory & Profile Governance](projects/02-profile-editor-and-attribute-mapping) | Create consistent, policy-ready identity data | Profile Editor, custom attributes, OEL, mappings |
+| [03 — Joiner-Mover-Leaver Automation](projects/03-user-lifecycle) | Automate access as employment data changes | Group Rules, lifecycle states, assignments |
+| [04 — Adaptive Access & MFA Policies](projects/06-security-policies) | Apply stronger authentication according to context | Authenticators, global session policies, app policies, network zones |
 
 ## Architecture
 
 ```mermaid
 flowchart TD
-    SOURCE[Authoritative identity data] --> OKTA[Okta Identity Engine]
-    OKTA --> UD[Universal Directory]
-    UD --> RULES[Attribute-based group rules]
-    RULES --> ACCESS[Application access]
-    OKTA --> POLICIES[Authentication and session policies]
-    POLICIES --> ACCESS
+    SOURCE[Authoritative identity data] --> UD[Okta Universal Directory]
+    UD --> RULES[Attribute-based Group Rules]
+    RULES --> GROUPS[Department, role and access groups]
+    GROUPS --> ACCESS[Application and policy access]
+    USER[Workforce user] --> SESSION[Global Session Policy]
+    SESSION --> AUTH[Authentication Policy and MFA]
+    AUTH --> ACCESS
 ```
 
-## Core scenarios
+## Enterprise scenarios demonstrated
 
-- **Joiner:** Create an identity, populate required attributes, apply group rules, and grant policy-based access.
-- **Mover:** Change department or employment attributes and verify that access adjusts automatically.
-- **Leaver:** Suspend or deactivate the identity and validate access removal.
-- **Delegated administrator:** Assign only the administrative permissions required for a support function.
-- **Policy enforcement:** Apply MFA and session requirements based on the user population and protected resource.
+- **Joiner:** Create a user with standardized attributes and automatically grant baseline access.
+- **Mover:** Change department, title, location, or employment type and validate access recalculation.
+- **Leaver:** Suspend and deactivate the identity, then confirm access is removed.
+- **Help-desk administrator:** Delegate limited support permissions without granting Super Administrator.
+- **Privileged Okta administrator:** Require stronger authentication for Admin Console access.
+- **Untrusted network:** Apply step-up authentication or shorter sessions outside trusted zones.
 
-## Security design principles
+## Okta competencies
 
-- Least privilege and separation of duties
-- Group-based access instead of direct user assignment
-- Attribute-driven lifecycle automation
-- Strong authentication for sensitive resources
-- Consistent identity data and naming standards
-- Auditability through System Log events and documented test evidence
+`Identity Engine` · `Universal Directory` · `Profile Editor` · `Okta Expression Language` · `Group Rules` · `Delegated Administration` · `Authenticators` · `MFA` · `Global Session Policies` · `Authentication Policies` · `Network Zones` · `System Log`
 
-## Technology stack
+## Validation method
 
-`Okta Identity Engine` · `Okta Universal Directory` · `Okta Expression Language` · `Group Rules` · `MFA` · `Authentication Policies` · `System Log`
+Each project documents:
 
-## Documentation standard
+1. Business requirement
+2. Identity or access design
+3. Configuration decisions
+4. Positive and negative test cases
+5. Expected and actual results
+6. System Log evidence
+7. Risks, limitations, and production improvements
 
-Each project is designed to include:
+## Current focus
 
-1. Business requirement and intended control
-2. Architecture or access-flow explanation
-3. Configuration evidence
-4. Test cases with expected and actual results
-5. Troubleshooting notes
-6. Security impact and lessons learned
+The active rebuild standardizes department, role, application-access, location, and employment-type groups. The next phase adds repeatable JML testing, policy verification, and clean evidence for every control.
 
-## Current development focus
-
-The Okta environment is being rebuilt into a cleaner enterprise model with standardized department, role, application-access, location, and employment-type groups. New documentation will emphasize repeatable test cases and measurable access outcomes.
-
-> All identities and systems shown in this repository belong to an isolated personal training environment. Secrets and authentication material are excluded.
+> This repository documents an isolated personal training environment. It excludes passwords, secrets, recovery codes, and active authentication material.
