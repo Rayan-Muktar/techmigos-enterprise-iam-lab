@@ -1,33 +1,67 @@
 # TechMigos Enterprise IAM & PAM Lab
 
-An enterprise-style identity and privileged-access portfolio built around workforce IAM, federation, lifecycle automation, Active Directory, and CyberArk Privileged Access Management.
+An enterprise-style identity security portfolio demonstrating workforce identity administration, lifecycle automation, access-policy design, Active Directory integration, and privileged access management.
 
-## Projects Index
+## Project objective
 
-The IAM portion is built as six sequential, interconnected projects — each documents a phase of standing up an enterprise identity environment and builds on the attributes, groups, and policies established before it.
+TechMigos is a simulated organization used to build and document realistic IAM and PAM workflows. The lab focuses on the controls an identity team would operate in production: identity data quality, least-privilege access, automated joiner-mover-leaver processes, administrative separation of duties, and protected privileged sessions.
 
-| # | Project | What it demonstrates | Key skills |
-|---|---------|----------------------|------------|
-| 01 | [Okta Organization Setup](./projects/01-okta-organization-setup) | Deploying and configuring an Okta Identity Engine tenant from scratch | Tenant configuration, admin role delegation, group design |
-| 02 | [Profile Editor & Attribute Mapping](./projects/02-profile-editor-and-attribute-mapping) | Bidirectional attribute sync between Okta and connected apps | Universal Directory, OEL, source-of-truth design |
-| 03 | [User Lifecycle](./projects/03-user-lifecycle) | Automated, attribute-driven group assignment (JML) | Group rules, provisioning, lifecycle automation |
-| 04 | [SAML — Salesforce](./projects/04-saml-salesforce) | Federated SSO with real troubleshooting included | SAML 2.0, IdP/SP trust, certificate exchange |
-| 05 | [SAML — Zendesk](./projects/05-saml-zendesk) | A second SAML integration, reinforcing the pattern | SAML 2.0, multi-app federation |
-| 06 | [Security Policies](./projects/06-security-policies) | Authentication and access policy design | MFA, session policy, adaptive access |
-| 07 | [CyberArk Privileged Access Management](./cyberark-pam) | Protecting Windows privileged accounts and brokering administrative RDP sessions through PSM | CyberArk Vault, PVWA, CPM, PSM, Safes, PSM-RDP, AD, PowerShell troubleshooting |
+## Portfolio projects
 
-## CyberArk PAM extension
+| Project | Business outcome | Skills demonstrated |
+|---|---|---|
+| [Okta Organization Setup](projects/01-okta-organization-setup) | Establishes the workforce identity tenant, administrative model, and group structure | Okta Identity Engine, delegated administration, group design |
+| [Profile Editor & Attribute Mapping](projects/02-profile-editor-and-attribute-mapping) | Creates consistent identity profiles and application-ready attributes | Universal Directory, custom attributes, Okta Expression Language, source-of-truth design |
+| [User Lifecycle Management](projects/03-user-lifecycle) | Automates access changes across joiner, mover, and leaver events | Group rules, provisioning logic, lifecycle states, access removal |
+| [Security Policies](projects/06-security-policies) | Applies stronger controls according to user, resource, and risk context | MFA, authentication policies, session controls, least privilege |
+| [CyberArk Privileged Access Management](cyberark-pam) | Protects privileged Windows accounts and brokers controlled administrative sessions | CyberArk Vault, PVWA, CPM, PSM, Safes, PSM-RDP, Active Directory |
 
-The CyberArk portion extends the lab from workforce identity into privileged identity security. It includes a dedicated Windows administrator Safe, privileged domain-account onboarding, Active Directory group-based target authorization, PSM-RDP, PSM service/port validation, and a real troubleshooting case involving the PSM Recorder.
+## Architecture
 
-Start here: **[TechMigos CyberArk PAM Lab](./cyberark-pam/README.md)**
+```mermaid
+flowchart TD
+    HR[Authoritative identity data] --> OKTA[Okta Identity Engine]
+    OKTA --> UD[Universal Directory]
+    UD --> RULES[Attribute-based group rules]
+    RULES --> ACCESS[Application and policy access]
+    AD[Active Directory] --> PAM[CyberArk PAM]
+    PAM --> TARGETS[Protected Windows systems]
+```
 
-### Tech stack
+## Core scenarios
 
-`Okta Identity Engine` · `CyberArk PAM` · `PVWA` · `CPM` · `PSM` · `Active Directory` · `PowerShell` · `SAML 2.0` · `MFA` · `SCIM` (in progress)
+- **Joiner:** Create an identity, populate required attributes, apply group rules, and grant policy-based access.
+- **Mover:** Change department or employment attributes and verify that access adjusts automatically.
+- **Leaver:** Suspend or deactivate the identity and validate access removal.
+- **Privileged administrator:** Store a privileged account in a CyberArk Safe and broker an audited administrative session through PSM.
+- **Policy enforcement:** Apply MFA and session requirements based on the user population and protected resource.
 
-### What ties it together
+## Security design principles
 
-The Okta projects demonstrate workforce identity: profiles, lifecycle, federation, and access policies. The CyberArk project adds privileged access management for administrative identities and Windows infrastructure. Together, the lab demonstrates the difference between granting a workforce identity access to applications and controlling how privileged credentials are stored, authorized, used, and monitored.
+- Least privilege and separation of duties
+- Group-based access instead of direct user assignment
+- Attribute-driven lifecycle automation
+- Strong authentication for sensitive resources
+- Controlled use of privileged credentials
+- Auditability through system events, session records, and test evidence
 
-> All systems, identities, hostnames, and private IP addresses documented here belong to an isolated personal training environment. Secrets and authentication material are intentionally excluded.
+## Technology stack
+
+`Okta Identity Engine` · `Okta Universal Directory` · `Active Directory` · `CyberArk PAM` · `PVWA` · `CPM` · `PSM` · `PowerShell` · `MFA`
+
+## Documentation standard
+
+Each project is designed to include:
+
+1. Business requirement and intended control
+2. Architecture or access-flow explanation
+3. Configuration evidence
+4. Test cases with expected and actual results
+5. Troubleshooting notes
+6. Security impact and lessons learned
+
+## Current development focus
+
+The Okta environment is being rebuilt into a cleaner enterprise model with standardized department, role, application-access, location, and employment-type groups. New documentation will emphasize repeatable test cases and measurable access outcomes.
+
+> All identities, systems, hostnames, and network information shown in this repository belong to an isolated personal training environment. Secrets and authentication material are excluded.
