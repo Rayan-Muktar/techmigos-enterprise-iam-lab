@@ -1,68 +1,92 @@
-# 👤 User Lifecycle Management
+# 03 — Okta Joiner-Mover-Leaver Automation
 
-This one covers the full lifecycle of a user account in Okta — from the moment someone's created to the point they're deleted for good.
+## Business requirement
 
-## Objective
+Manual group assignment does not scale and creates inconsistent access. TechMigos needs attribute-driven lifecycle controls that grant, adjust, and remove access as a user's employment data changes.
 
-Manage users end-to-end the way an IT admin actually would: onboarding, profile updates, group/app assignment, and eventually offboarding (suspend, deactivate, delete).
+## Lifecycle flow
 
-## What I did
+```mermaid
+flowchart LR
+    JOINER[Joiner] --> PROFILE[Standardized profile]
+    PROFILE --> RULES[Okta Group Rules]
+    RULES --> ACCESS[Group-based access]
+    MOVER[Mover] --> UPDATE[Attribute change]
+    UPDATE --> RULES
+    LEAVER[Leaver] --> SUSPEND[Suspend or deactivate]
+    SUSPEND --> REMOVE[Access removed]
+```
 
-Started by creating a handful of test users manually to get a feel for the create flow, then moved into managing them through their lifecycle — updating profile fields, adding them to groups, assigning apps, and eventually walking them through suspension and deactivation.
+## Implemented group-rule logic
 
-I also went back and built out **group rules** so that group assignment isn't manual anymore. Instead of adding people to groups by hand, users get assigned automatically based on their `department` or `title` attribute — the same attributes set up in [Profile Editor & Attribute Mapping](../02-profile-editor-and-attribute-mapping). That's really the point of doing attribute work first: it's what makes rules like this possible.
+| Rule | Condition | Result |
+|---|---|---|
+| Finance membership | `user.department == "Finance"` | Add to Finance group |
+| Marketing membership | `user.department == "Marketing"` | Add to Marketing group |
+| HR membership | HR department or approved HR title | Add to HR group |
+| Cloud role | Approved cloud title | Add to Cloud Professionals |
+| Employee baseline | `user.userType == "Employee"` | Add to employee baseline group |
+| Contractor control | `user.userType == "Contractor"` | Add to contractor group |
+| New York location | `user.city == "New York"` | Add to New York location group |
 
-- If `user.department` equals `Finance` → assigned to TechMigos Finance Group
-- If `user.title` equals `Cloud Professional` → assigned to TechMigos Cloud Professionals
-- If `user.title` equals `Human Resource Associate` → assigned to TechMigos HR Group
-- If `user.title` equals `Marketing Professional` → assigned to TechMigos Marketing Group
-- If `user.login` contains `@oktacertified.com` → assigned to TechMigos Okta Admins
+The earlier administrator rule based only on an email-domain match was disabled after testing because its condition was too broad for privileged access. Administrator membership should use a controlled approval process rather than a general profile rule.
 
-![Group Rules](./screenshots/group-rules.png)
+## Joiner test
 
-Each rule also has an `Except` condition available, which I left empty for this lab — but in a real org that's where you'd exclude specific people from a rule that would otherwise catch them. A VP with the title "Marketing Professional," for example, might need to skip the standard Marketing group rule if they're meant to sit in a different group entirely.
+1. Create a user with department, title, employment type, and location.
+2. Activate the identity.
+3. Allow group rules to evaluate.
+4. Verify expected department, employment-type, and location groups.
+5. Confirm unrelated groups are not assigned.
+6. Review user creation and group membership events in the System Log.
 
-I ended up disabling the Okta Admins rule after testing it (currently marked Inactive) since it was matching more accounts than I wanted while I was still testing — a good reminder that rule conditions need to be scoped carefully before going live, not just logically correct.
+## Mover test
 
-![Groups Overview](./screenshots/groups-overview.png)
+1. Record the user's existing access.
+2. Change the department or job title.
+3. Verify the old rule-based membership is removed.
+4. Verify the new membership is added.
+5. Confirm direct assignments are reviewed separately.
+6. Validate the complete change in the System Log.
 
-This is really the piece that ties lifecycle management to something real — in an actual company, nobody's manually dragging 500 employees into the right groups. The group rules do that work the moment HR data changes a person's title or department.
+## Leaver test
 
-## Steps covered
+1. Suspend the user to block new authentication while preserving the account.
+2. Verify application access is unavailable.
+3. Deactivate the user when offboarding is approved.
+4. Confirm assignments and active sessions are addressed.
+5. Delete only when retention and recovery requirements permit it.
+6. Review the offboarding events in the System Log.
 
-- Created new users
-- Updated user profiles
-- Built group rules for automatic, attribute-based group assignment
-- Assigned applications
-- Suspended accounts
-- Reactivated accounts
-- Deactivated accounts
-- Deleted accounts
+## Test matrix
 
-## Screenshots
+| Scenario | Positive result | Negative check |
+|---|---|---|
+| Finance employee joins | Finance and employee groups assigned | Marketing and contractor groups absent |
+| Employee moves to IT | IT membership added | Previous Finance membership removed |
+| Contractor becomes employee | Employee baseline assigned | Contractor membership removed |
+| User is suspended | New sign-in blocked | Account is not silently deleted |
+| User is deactivated | Access removed | No active application assignment remains unnoticed |
 
-![User Directory](./screenshots/user-directory.png)
-*User directory showing all provisioned accounts*
+## Controls demonstrated
 
-![Create User](./screenshots/create-user.png)
-*Creating a new user in Okta*
-
-![User Profile](./screenshots/user-profile.png)
-*Editing a user's profile attributes*
-
-![Application Assignment](./screenshots/app-assignment.png)
-*Assigning applications to a user*
-
-![Suspend User](./screenshots/suspend-user.png)
-*Suspending a user account*
-
-![Deactivate User](./screenshots/deactivate-user.png)
-*Deactivating a user account*
-
-## Skills demonstrated
-
-User provisioning, group rule design, attribute-based access assignment, application assignment, and the full account lifecycle (create → suspend → reactivate → deactivate → delete).
+- User creation and activation
+- Profile updates
+- Attribute-based Group Rules
+- Group-based access assignment
+- Suspension and reactivation
+- Deactivation and deletion
+- System Log validation
+- Exception awareness for direct assignments
 
 ## Outcome
 
-Managed the complete user lifecycle in Okta, and moved group assignment from a manual process to an automated, attribute-driven one using group rules. That second part is the difference between "I can click buttons in Okta" and "I understand how this scales past a handful of test users."
+The lifecycle process moves TechMigos from manual membership management to repeatable, attribute-driven JML operations. Tests cover both intended access and the absence or removal of access.
+
+## Production improvements
+
+- Source lifecycle events from an HR system
+- Add manager-based approval for sensitive access
+- Maintain exception groups with owners and expiration dates
+- Monitor failed rule evaluation and deprovisioning events
+- Run periodic access certification
