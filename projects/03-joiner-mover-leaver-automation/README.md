@@ -2,91 +2,50 @@
 
 ## Business requirement
 
-Manual group assignment does not scale and creates inconsistent access. TechMigos needs attribute-driven lifecycle controls that grant, adjust, and remove access as a user's employment data changes.
+I addressed the risk created by manual assignments by designing attribute-driven lifecycle controls for joiners, movers, and leavers.
 
-## Lifecycle flow
+## What I completed
 
-```mermaid
-flowchart LR
-    JOINER[Joiner] --> PROFILE[Standardized profile]
-    PROFILE --> RULES[Okta Group Rules]
-    RULES --> ACCESS[Group-based access]
-    MOVER[Mover] --> UPDATE[Attribute change]
-    UPDATE --> RULES
-    LEAVER[Leaver] --> SUSPEND[Suspend or deactivate]
-    SUSPEND --> REMOVE[Access removed]
-```
+- I standardized the attributes required for lifecycle decisions.
+- I created Group Rule logic for department and employment-type assignments.
+- I tested a joiner by creating a policy-ready user profile.
+- I tested a mover by changing a user's department.
+- I documented and tested the leaver process using suspension or deactivation.
+- I reviewed membership results and related Okta events.
 
-## Implemented group-rule logic
+## Automation logic I used
 
-| Rule | Condition | Result |
+| Scenario | Condition I evaluated | Result I validated |
 |---|---|---|
-| Finance membership | `user.department == "Finance"` | Add to Finance group |
-| Marketing membership | `user.department == "Marketing"` | Add to Marketing group |
-| HR membership | HR department or approved HR title | Add to HR group |
-| Cloud role | Approved cloud title | Add to Cloud Professionals |
-| Employee baseline | `user.userType == "Employee"` | Add to employee baseline group |
-| Contractor control | `user.userType == "Contractor"` | Add to contractor group |
-| New York location | `user.city == "New York"` | Add to New York location group |
+| Finance employee | Department equaled Finance | I assigned the user to the Finance group. |
+| Marketing employee | Department equaled Marketing | I assigned the user to the Marketing group. |
+| Contractor | User type equaled Contractor | I assigned the user to contractor access. |
+| Intern | User type equaled Intern | I assigned the user to intern access. |
+| New York worker | City equaled New York | I assigned the user to the location group. |
 
-The earlier administrator rule based only on an email-domain match was disabled after testing because its condition was too broad for privileged access. Administrator membership should use a controlled approval process rather than a general profile rule.
+## Tests I performed
 
-## Joiner test
+### Joiner
 
-1. Create a user with department, title, employment type, and location.
-2. Activate the identity.
-3. Allow group rules to evaluate.
-4. Verify expected department, employment-type, and location groups.
-5. Confirm unrelated groups are not assigned.
-6. Review user creation and group membership events in the System Log.
+1. I created and activated a test identity.
+2. I populated the required profile attributes.
+3. I verified the expected group membership and access state.
 
-## Mover test
+### Mover
 
-1. Record the user's existing access.
-2. Change the department or job title.
-3. Verify the old rule-based membership is removed.
-4. Verify the new membership is added.
-5. Confirm direct assignments are reviewed separately.
-6. Validate the complete change in the System Log.
+1. I changed the test user's department.
+2. I allowed the Group Rule to reevaluate the profile.
+3. I verified that old access was removed and new access was added.
 
-## Leaver test
+### Leaver
 
-1. Suspend the user to block new authentication while preserving the account.
-2. Verify application access is unavailable.
-3. Deactivate the user when offboarding is approved.
-4. Confirm assignments and active sessions are addressed.
-5. Delete only when retention and recovery requirements permit it.
-6. Review the offboarding events in the System Log.
+1. I suspended or deactivated the test user.
+2. I verified that the user could no longer sign in.
+3. I reviewed access removal and the related System Log event.
 
-## Test matrix
+## Production improvements I would make
 
-| Scenario | Positive result | Negative check |
-|---|---|---|
-| Finance employee joins | Finance and employee groups assigned | Marketing and contractor groups absent |
-| Employee moves to IT | IT membership added | Previous Finance membership removed |
-| Contractor becomes employee | Employee baseline assigned | Contractor membership removed |
-| User is suspended | New sign-in blocked | Account is not silently deleted |
-| User is deactivated | Access removed | No active application assignment remains unnoticed |
-
-## Controls demonstrated
-
-- User creation and activation
-- Profile updates
-- Attribute-based Group Rules
-- Group-based access assignment
-- Suspension and reactivation
-- Deactivation and deletion
-- System Log validation
-- Exception awareness for direct assignments
-
-## Outcome
-
-The lifecycle process moves TechMigos from manual membership management to repeatable, attribute-driven JML operations. Tests cover both intended access and the absence or removal of access.
-
-## Production improvements
-
-- Source lifecycle events from an HR system
-- Add manager-based approval for sensitive access
-- Maintain exception groups with owners and expiration dates
-- Monitor failed rule evaluation and deprovisioning events
-- Run periodic access certification
+- I would integrate an authoritative HR source.
+- I would add approvals for sensitive access.
+- I would define service-level targets for leaver deprovisioning.
+- I would add reconciliation and exception reporting.
