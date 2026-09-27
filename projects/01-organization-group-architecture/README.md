@@ -2,82 +2,57 @@
 
 ## Business requirement
 
-TechMigos needs an Okta Identity Engine tenant that can support workforce identities without relying on inconsistent manual assignments or excessive administrator privilege.
+I modeled TechMigos as an enterprise that needed a governed Okta Identity Engine tenant without inconsistent group assignments or excessive administrator privilege.
 
-## Objectives
+## What I completed
 
-- Configure and brand the Okta tenant
-- Establish administrative separation of duties
-- Create a scalable group model
-- Apply consistent naming and descriptions
-- Prepare the tenant for attribute-driven automation
-- Verify administrative activity in the System Log
+- I activated and reviewed the Okta Identity Engine tenant.
+- I organized access around department, role, location, and administration.
+- I created clear group names and descriptions.
+- I reviewed administrator access using a least-privilege approach.
+- I prepared the tenant for attribute-driven automation.
 
-## Environment
+## Group architecture I created
 
-| Component | Configuration |
-|---|---|
-| Platform | Okta Identity Engine |
-| Organization | TechMigos Enterprise |
-| Environment | Personal developer tenant |
-| Primary administration | Super Administrator |
-| Identity directory | Okta Universal Directory |
-
-## Group architecture
-
-The original tenant used department, function, location, and administrative groups. The rebuild standardizes these into clear categories:
-
-| Category | Examples | Purpose |
+| Category | Examples | What I accomplished |
 |---|---|---|
-| Department | `DEPT-Finance`, `DEPT-Marketing`, `DEPT-HR`, `DEPT-IT` | Represent the organizational structure |
-| Role | `ROLE-Helpdesk`, `ROLE-Cloud`, `ROLE-Cybersecurity` | Represent job functions across departments |
-| Administration | `ADMIN-Okta-Helpdesk`, `ADMIN-Okta-App`, `ADMIN-Okta-ReadOnly` | Support delegated administration |
-| Location | `LOC-New-York` | Support location-aware access decisions |
-| Employment type | `TYPE-Employee`, `TYPE-Contractor`, `TYPE-Intern` | Support lifecycle and policy differences |
-
-## Administrative model
-
-- Reserve Super Administrator for a minimal number of accounts.
-- Use delegated roles for routine support and configuration.
-- Separate help-desk, application, reporting, and policy administration.
-- Assign administrative roles through controlled groups where supported.
-- Review administrator changes and failed actions in the System Log.
+| Department | TechMigos Finance Group, Marketing Group, HR Group | I represented the organizational structure. |
+| Role | Help Support, Cloud Professionals, CyberOps | I represented job functions across departments. |
+| Administration | TechMigos Administrators, Okta Admins | I separated administrative access from workforce access. |
+| Location | New York Office | I prepared location-based assignments. |
 
 ## Implementation summary
 
-1. Activated the Identity Engine tenant and verified administrator access.
-2. Applied TechMigos branding and organization settings.
-3. Reviewed Directory, Security, Reports, and System Log functions.
-4. Created the initial department, function, location, and administrator groups.
-5. Documented a cleaner naming model for the new tenant.
-6. Identified broad administrator membership as a least-privilege risk.
+1. I verified administrator access to the tenant.
+2. I reviewed Directory, Security, Reports, and System Log functions.
+3. I created department, function, location, and administrative groups.
+4. I added descriptions explaining each group's purpose.
+5. I assigned test users manually and through a Finance group rule.
+6. I verified the resulting membership.
 
-## Validation tests
+## Validation results
 
-| Test | Expected result |
+| Test I performed | Result I observed |
 |---|---|
-| Create a department group with description | Group appears with clear ownership and purpose |
-| Assign a user to a non-admin group | User gains only the intended membership |
-| Test delegated help-desk access | Support tasks work while policy and Super Admin functions remain unavailable |
-| Review a group or admin change | Matching event appears in the System Log |
-| Attempt an unauthorized admin action | Action is blocked and logged |
+| I reviewed the complete group directory. | The groups appeared with descriptions, people counts, and application counts. |
+| I opened the Finance group and reviewed its members. | Four active users appeared with rule-managed and manual assignments. |
 
-## Key design decisions
+## Evidence
 
-**Groups represent one purpose.** Department membership, administrator authority, and application access should not be combined into a single group.
+### Group directory
 
-**Administrative access follows least privilege.** Routine help-desk work does not justify Super Administrator access.
+![Okta group directory](images/01-group-directory.png)
 
-**Naming is part of governance.** Prefixes make group intent understandable during reviews and troubleshooting.
+**What I proved:** I created and documented the TechMigos group architecture.
 
-## Outcome
+### Finance group membership
 
-The tenant now has a documented foundation for profile governance, lifecycle automation, and policy enforcement. The next project defines the attributes that drive this group architecture.
+![Finance group membership](images/02-group-membership.png)
 
-## Production improvements
+**What I proved:** I verified active Finance members and confirmed rule-based and manual assignments.
 
-- Connect an HR system as the authoritative source
-- Maintain a formal role and entitlement matrix
-- Review administrator assignments regularly
-- Use break-glass accounts with monitored emergency procedures
-- Export System Log events to a SIEM
+## Production improvements I would make
+
+- I would assign a formal owner and review date to every group.
+- I would replace broad administrator access with delegated roles.
+- I would perform periodic access reviews and retain System Log evidence.
