@@ -1,16 +1,19 @@
-# Project 01 Screenshot Evidence
+# Project 01 — Evidence Index
 
-Upload sanitized screenshots from your Okta Admin Console to this folder.
+This folder contains the sanitized screenshots I captured while completing the **Okta Organization & Group Architecture** project.
 
-## Required evidence
+## Completed evidence
 
-| Filename | Screenshot to capture | What it proves |
+| Evidence file | Configuration validated | What I demonstrated |
 |---|---|---|
-| `01-group-directory.png` | Directory → Groups showing TechMigos groups | The group architecture was created |
-| `02-group-membership.png` | People tab of a departmental group | Users were assigned correctly |
-| `03-admin-role-assignment.png` | Security → Administrators | Administrative access follows role separation |
-| `04-system-log-validation.png` | System Log event for group or admin activity | Okta recorded the configuration change |
+| [`01-group-directory.png`](./01-group-directory.png) | Directory → Groups | I created the TechMigos organizational and departmental group structure. |
+| [`02-group-membership.png`](./02-group-membership.png) | Departmental group → People | I assigned users to the appropriate departmental group. |
+| [`03-standard-admin-roles.png`](./03-standard-admin-roles.png) | Security → Administrators → Admin roles | I reviewed the standard Okta administrative roles used for delegated administration. |
+| [`04-custom-admin-roles.png`](./04-custom-admin-roles.png) | Security → Administrators → Roles | I created and reviewed custom administrative roles to support least-privilege access. |
+| [`05-system-log-overview.png`](./05-system-log-overview.png) | Reports → System Log | I filtered successful events and confirmed that Okta recorded administrative activity for audit review. |
 
-## Before uploading
+## Evidence handling
 
-Crop or blur personal emails, tenant URLs, tokens, secrets, session identifiers, and any real employee information. Use test identities only.
+I sanitized the screenshots before publishing them. Personal email addresses, IP addresses, location details, tokens, secrets, session identifiers, and tenant-specific information were excluded wherever possible.
+
+> These screenshots document work completed in a test Okta environment using simulated TechMigos identities.
