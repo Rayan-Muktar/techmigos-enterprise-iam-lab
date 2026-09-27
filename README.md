@@ -1,74 +1,44 @@
 # TechMigos Enterprise Okta IAM Lab
 
-
-A hands-on Okta Identity Engine portfolio demonstrating workforce identity administration, Universal Directory, lifecycle automation, group-based access, delegated administration, and adaptive security policies.
-
+I built this hands-on Okta Identity Engine portfolio to demonstrate workforce identity administration, Universal Directory, lifecycle automation, group-based access, delegated administration, and adaptive security controls.
 
 ## Business scenario
 
+I modeled TechMigos as a growing enterprise that needed governed identity data, automated access decisions, least-privilege administration, and measurable security controls.
 
-TechMigos is a simulated enterprise rebuilding its identity environment around Okta. The goal is to replace manual identity administration with standardized profiles, automated access decisions, least-privilege administration, and measurable security controls.
+## Projects I completed
 
-
-## Okta project portfolio
-
-
-| Project | Business problem | Okta capabilities |
+| Project | Work I completed | Okta capabilities I used |
 |---|---|---|
-| [01 — Organization & Group Architecture](projects/01-organization-group-architecture) | Establish a governed tenant and scalable access structure | Identity Engine, groups, admin roles, System Log |
-| [02 — Universal Directory & Profile Governance](projects/02-universal-directory-profile-governance) | Create consistent, policy-ready identity data | Profile Editor, custom attributes, OEL, mappings |
-| [03 — Joiner-Mover-Leaver Automation](projects/03-joiner-mover-leaver-automation) | Automate access as employment data changes | Group Rules, lifecycle states, assignments |
-| [04 — Adaptive Access & MFA Policies](projects/04-adaptive-access-mfa-policies) | Apply stronger authentication according to context | Authenticators, global session policies, app policies, network zones |
+| [01 — Organization & Group Architecture](projects/01-organization-group-architecture) | I established a governed tenant and scalable group structure. | Identity Engine, groups, admin roles, System Log |
+| [02 — Universal Directory & Profile Governance](projects/02-universal-directory-profile-governance) | I created consistent, policy-ready identity data. | Profile Editor, custom attributes, OEL, mappings |
+| [03 — Joiner-Mover-Leaver Automation](projects/03-joiner-mover-leaver-automation) | I automated access changes based on employment data. | Group Rules, lifecycle states, assignments |
+| [04 — Adaptive Access & MFA Policies](projects/04-adaptive-access-mfa-policies) | I applied stronger authentication according to access context. | Authenticators, session policies, app policies, network zones |
 
+## Work I performed
 
-## Architecture
+- I configured a structured Okta organization for the simulated TechMigos workforce.
+- I created departmental, role-based, location, and administrative groups.
+- I designed a governed user-profile schema for policy and automation decisions.
+- I used Group Rules to demonstrate joiner, mover, and leaver access changes.
+- I documented session, authentication, and MFA policy controls.
+- I validated outcomes through user records, group membership, and System Log events.
+- I captured screenshots as evidence of the configurations and test results.
 
+## Skills I demonstrated
 
-```mermaid
-flowchart TD
-    SOURCE[Authoritative identity data] --> UD[Okta Universal Directory]
-    UD --> RULES[Attribute-based Group Rules]
-    RULES --> GROUPS[Department, role and access groups]
-    GROUPS --> ACCESS[Application and policy access]
-    USER[Workforce user] --> SESSION[Global Session Policy]
-    SESSION --> AUTH[Authentication Policy and MFA]
-    AUTH --> ACCESS
-```
+- Okta Identity Engine administration
+- Universal Directory and Profile Editor
+- Group design and Group Rules
+- Joiner-Mover-Leaver lifecycle management
+- Delegated administration and least privilege
+- MFA, session, and authentication policies
+- Troubleshooting with the Okta System Log
 
+## Validation approach
 
-## Enterprise scenarios demonstrated
+For each project, I documented the business requirement, the configuration I implemented, the tests I performed, the results I observed, and the production improvements I would recommend.
 
+## Documentation status
 
-- **Joiner:** Create a user with standardized attributes and automatically grant baseline access.
-- **Mover:** Change department, title, location, or employment type and validate access recalculation.
-- **Leaver:** Suspend and deactivate the identity, then confirm access is removed.
-- **Help-desk administrator:** Delegate limited support permissions without granting Super Administrator.
-- **Privileged Okta administrator:** Require stronger authentication for Admin Console access.
-- **Untrusted network:** Apply step-up authentication or shorter sessions outside trusted zones.
-
-
-## Okta competencies
-
-
-`Identity Engine` · `Universal Directory` · `Profile Editor` · `Okta Expression Language` · `Group Rules` · `Delegated Administration` · `Authenticators` · `MFA` · `Global Session Policies` · `Authentication Policies` · `Network Zones` · `System Log`
-
-
-## Validation method
-
-
-Each project documents:
-
-
-1. Business requirement
-2. Identity or access design
-3. Configuration decisions
-4. Positive and negative test cases
-5. Expected and actual results
-6. System Log evidence
-7. Risks, limitations, and production improvements
-
-
-## Current focus
-
-
-The active rebuild standardizes department, role, application-access, location, and employment-type groups. The next phase adds repeatable JML testing, policy verification, and clean evidence for every control.
+I am adding sanitized Okta screenshots so reviewers can connect each documented control to visible implementation evidence.
