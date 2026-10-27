@@ -2,40 +2,32 @@
 
 ## Project summary
 
-I designed a group model for the simulated TechMigos workforce in an Okta Identity Engine tenant. The lab covers how users are organized by department, job function, location, and administrative responsibility, and how group membership can be reviewed and audited.
+I designed a group model for the simulated TechMigos workforce in an Okta Identity Engine tenant. The lab covers how users are organized by department, job function, location, and administrative responsibility, and how group membership can support governed application access.
 
-This is a lab implementation. The evidence below describes what I configured and observed; proposed production controls and unverified test cases are labeled separately.
+This is a lab implementation. The evidence below distinguishes work I configured and observed from RBAC and ABAC validation that still needs to be captured.
 
 ## Business problem
 
-A growing organization needs groups that are understandable, maintainable, and safe to use in access decisions. Poorly governed groups can accumulate manual exceptions, duplicate access, or grant administrative privileges too broadly.
-
-The goal of this project was to establish a readable group structure, compare manual and rule-managed membership, review administrator-role options, and inspect Okta audit activity.
+A growing organization needs groups that are understandable, maintainable, and safe to use in access decisions. Group membership should follow a defined source of truth, application access should match job responsibilities, and administrative privileges should remain separately controlled.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    U["Workforce users"] --> D["Department groups"]
-    U --> F["Job-function groups"]
-    U --> L["Location groups"]
-    U --> A["Administrative groups"]
-    D --> M["Membership and access review"]
-    F --> M
-    L --> M
-    A --> R["Least-privilege role review"]
-    M --> S["Okta System Log"]
-    R --> S
+    U["Workforce user"] --> P["Okta user profile attributes"]
+    P -->|ABAC: evaluate attributes| G["Group Rule"]
+    G -->|membership decision| R["Access group"]
+    R -->|RBAC: grant app role/access| A["Application assignment"]
+    A --> V["Verify allowed and denied access"]
+    V --> L["Okta System Log"]
+    X["Administrator"] -->|separate, reviewed assignment| C["Custom admin role"]
+    C --> L
 ```
 
-The layers serve different purposes:
-
-- **Department groups** describe organizational ownership, such as Finance, Marketing, and HR.
-- **Job-function groups** describe work responsibilities, such as Help Support, Cloud Professionals, and CyberOps.
-- **Location groups** identify office-based populations, such as New York Office.
-- **Administrative groups and roles** separate privileged administration from workforce access.
-
-The model keeps group purpose explicit so a reviewer can understand why a user belongs to a group before using it in an application or policy assignment.
+- **ABAC:** User attributes, such as department, are evaluated to determine group membership or another access decision.
+- **RBAC:** A role or access group grants a defined set of application permissions.
+- **Combined flow:** Attribute-based membership can place a user in an access group; that group can then be assigned to an app or app role.
+- **Administrative access:** Admin roles use a separate, reviewed assignment path. Okta Group Rules can't assign users to admin groups.
 
 ## Group model
 
@@ -46,32 +38,66 @@ The model keeps group purpose explicit so a reviewer can understand why a user b
 | Location | New York Office | Identify users associated with an office location |
 | Administration | TechMigos Administrators, Okta Admins | Separate privileged administration from workforce groups |
 
-### Membership model
+## RBAC and ABAC design
 
-I used both manual membership and a Finance Group Rule. The Finance membership evidence shows four active users and a mix of rule-managed and manually assigned members.
+### ABAC: attribute-driven membership
 
-That demonstrates both assignment methods, while also surfacing a governance question: manual additions to a rule-managed group can create exceptions that are harder to explain later. Before production use, I would document the exact rule expression, identify the authoritative profile attribute, and define who can approve and review exceptions.
+I configured a Finance Group Rule and reviewed Finance membership. The existing screenshot shows four active users and a mix of rule-managed and manually assigned members. The current evidence does not show the rule expression or the profile attribute that drove the rule.
 
-## Implementation
+A test rule might use an expression like:
+
+```text
+user.department == "Finance"
+```
+
+This is an example only. I will document the actual expression and use the exact attribute name and value configured in my tenant.
+
+### RBAC: group-to-application access
+
+To demonstrate RBAC end to end, I will assign an access group to a test app and capture the app role or entitlement when the integration supports it. The group membership evidence alone does not prove application access was granted.
+
+### Combined test scenario
+
+1. Set a test user's source profile attribute to Finance.
+2. Confirm the Group Rule evaluates and places the user in the Finance access group.
+3. Assign the Finance access group to a test application with the intended role or entitlement.
+4. Verify that the Finance user receives the expected access.
+5. Test an HR user and verify that the user does not receive Finance group membership or Finance app access.
+6. Change a test user's department and verify that old access is removed and new access is granted.
+
+These end-to-end tests are planned and are not claimed as completed in the current evidence.
+
+## Administrative access
+
+I reviewed standard and custom administrator roles and created custom role definitions for limited responsibilities. To complete the evidence, I still need to show a named test administrator assigned to a custom role and validate both an allowed action and an out-of-scope action.
+
+Group Rules can't be used to assign users to admin groups, so I keep this path separate from attribute-driven workforce access.
+
+## Implementation completed
 
 1. I activated and reviewed the Okta Identity Engine tenant.
 2. I reviewed the Directory, Security, Reports, and System Log areas.
 3. I created department, job-function, location, and administrative groups with descriptions.
-4. I added test users to the Finance group through rule-managed and manual membership.
-5. I reviewed the resulting group membership.
-6. I compared standard administrator roles with custom administrator roles and created custom roles for limited responsibilities.
+4. I used both rule-managed and manual membership in the Finance group.
+5. I reviewed the resulting Finance group membership.
+6. I compared standard administrator roles with custom administrator roles and created custom role definitions.
 7. I filtered the System Log for successful events.
 
 ## Validation record
 
-| Check | Evidence and observed result | What it establishes |
+| Check | Evidence and observed result | Status |
 |---|---|---|
-| Group inventory | The directory screenshot shows groups, descriptions, people counts, and application counts. | The tenant contains a documented group structure. |
-| Finance membership | The Finance group screenshot shows four active users and rule-managed plus manual membership. | Both membership methods were used and the resulting membership was reviewed. |
-| Administrator roles | Screenshots show standard and custom administrator-role options; custom roles were created. | The available role model was reviewed and narrower role definitions were configured. |
-| System Log | The screenshot shows a filtered timeline of successful events. | Audit events can be found and reviewed in the tenant. |
+| Group inventory | The directory screenshot shows groups, descriptions, people counts, and application counts. | Captured |
+| Finance membership | The Finance group screenshot shows four active users and rule-managed plus manual membership. | Captured |
+| Administrator role definitions | Screenshots show standard and custom administrator-role options; custom roles were created. | Captured |
+| System Log overview | The screenshot shows a filtered timeline of successful events. | Captured |
+| ABAC rule logic | Exact expression, target group, and attribute source are not shown in current evidence. | To capture |
+| RBAC app assignment | Group-to-app assignment and app role or entitlement are not shown in current evidence. | To capture |
+| Access decision | Positive Finance and negative HR access results are not shown in current evidence. | To test |
+| Admin assignment | A named admin assigned to the custom role and tested against its scope is not shown. | To capture |
+| Detailed audit event | A specific event's actor, target, type, timestamp, and outcome are not shown. | To capture |
 
-## Evidence
+## Existing evidence
 
 ### Group directory
 
@@ -103,28 +129,22 @@ That demonstrates both assignment methods, while also surfacing a governance que
 
 **Evidence:** A filtered view of successful audit activity. The screenshot is an overview; it does not show the full details of a specific event.
 
-## Remaining validation
+## Add the next screenshots
 
-These checks are the next lab steps. They are not represented as completed in the current evidence.
+I created a dedicated [RBAC and ABAC screenshot drop area](images/access-control/README.md). It contains a filename checklist for the profile attribute, Group Rule, resulting membership, app assignment, positive and negative access tests, admin role assignment, and detailed System Log event.
 
-| Scenario | Expected result | Evidence to capture |
-|---|---|---|
-| Finance joiner | A user whose authoritative department attribute matches the Finance rule is added to the Finance group. | Rule expression, test user's relevant attribute, and resulting membership |
-| Department mover | Changing a user's department removes the old rule-based membership and grants the new one. | Before-and-after profile, group membership, and relevant System Log events |
-| Manual exception | A manually added member is identifiable as an exception and has an owner or approval record. | Membership source, approval record, and review date |
-| Delegated administrator | A named test administrator receives only the intended custom role and can perform its approved tasks. | Assigned administrator, role, permitted task, and denied out-of-scope task |
-| Audit detail | A relevant change event records the actor, target, event type, timestamp, and outcome. | Redacted event-detail view |
+Keep the existing screenshots in the parent `images/` folder. Add the new access-control evidence under `images/access-control/`, then update the evidence index when each screenshot is captured.
 
 ## Production design recommendations
 
-- Use a consistent naming convention that identifies group purpose and scope.
-- Make an authoritative user-profile attribute the source for rule-managed membership.
+- Use an authoritative user-profile attribute as the source for rule-managed membership.
 - Assign an owner and review date to each access-bearing group.
 - Keep manual exceptions documented, approved, and periodically reviewed.
+- Assign app access to groups with clear roles or entitlements where supported.
+- Test allowed and denied access after joiner and mover changes.
 - Test both allowed and denied administrative actions before delegating a role.
 - Review detailed System Log events for access changes and administrator activity.
-- Avoid assigning application access to broad groups until membership and ownership are validated.
 
 ## What I learned
 
-The group directory is only the start of group architecture. A stronger design connects each group's purpose to a membership source, an owner, an access decision, and a testable review process. This lab established the group categories and demonstrated manual and rule-managed membership; the remaining validation table identifies the evidence needed to show the full lifecycle and least-privilege behavior.
+A group architecture becomes more meaningful when it shows both **why** a user enters a group and **what access** that group grants. In this lab, Finance rule-managed and manual membership is documented. The next validation step is to prove the full attribute-to-group-to-application path and record the resulting access decisions.
