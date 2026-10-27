@@ -1,150 +1,75 @@
 # 01 — Okta Organization & Group Architecture
 
-## Project summary
+This is a record of what I set up in my Okta Identity Engine practice tenant for the simulated TechMigos workforce, what I saw in the tenant, and what I still need to test.
 
-I designed a group model for the simulated TechMigos workforce in an Okta Identity Engine tenant. The lab covers how users are organized by department, job function, location, and administrative responsibility, and how group membership can support governed application access.
+## What I set up
 
-This is a lab implementation. The evidence below distinguishes work I configured and observed from RBAC and ABAC validation that still needs to be captured.
+- I created groups for departments, job functions, location, and administration.
+- I created a Finance Group Rule and reviewed its membership. The screenshot shows four active users, with both rule-managed and manual members.
+- I reviewed Okta's standard admin roles and created custom role definitions.
+- I filtered the System Log for successful events.
 
-## Business problem
+The screenshots below show those parts of the lab. They don't yet show a complete app-access test.
 
-A growing organization needs groups that are understandable, maintainable, and safe to use in access decisions. Group membership should follow a defined source of truth, application access should match job responsibilities, and administrative privileges should remain separately controlled.
+## How I’m applying ABAC and RBAC
 
-## Architecture
+I think of **ABAC** as using a user's attributes to decide which access group they should enter. In my lab, I created a Finance Group Rule. I still need to capture the exact rule and the profile attribute it checks.
 
-```mermaid
-flowchart LR
-    U["Workforce user"] --> P["Okta user profile attributes"]
-    P -->|ABAC: evaluate attributes| G["Group Rule"]
-    G -->|membership decision| R["Access group"]
-    R -->|RBAC: grant app role/access| A["Application assignment"]
-    A --> V["Verify allowed and denied access"]
-    V --> L["Okta System Log"]
-    X["Administrator"] -->|separate, reviewed assignment| C["Custom admin role"]
-    C --> L
-```
+I think of **RBAC** as using a role or group to give someone a defined level of access. My current screenshots show the group structure, but they don't show a group assigned to an app or prove what access a member receives.
 
-- **ABAC:** User attributes, such as department, are evaluated to determine group membership or another access decision.
-- **RBAC:** A role or access group grants a defined set of application permissions.
-- **Combined flow:** Attribute-based membership can place a user in an access group; that group can then be assigned to an app or app role.
-- **Administrative access:** Admin roles use a separate, reviewed assignment path. Okta Group Rules can't assign users to admin groups.
+The end-to-end path I want to test is:
 
-## Group model
+**User attribute → Group Rule → access group → app assignment → verified access**
 
-| Group layer | Examples from the lab | Intended use |
-|---|---|---|
-| Department | TechMigos Finance Group, Marketing Group, HR Group | Organize access and review by business department |
-| Job function | Help Support, Cloud Professionals, CyberOps | Represent role or operational responsibilities |
-| Location | New York Office | Identify users associated with an office location |
-| Administration | TechMigos Administrators, Okta Admins | Separate privileged administration from workforce groups |
+For example, I could test whether a user's Finance department attribute puts them in the Finance group, then assign that group to a test app. I would also check that an HR test user does not receive Finance access. The exact rule and test results need to come from my tenant; I haven't documented them here yet.
 
-## RBAC and ABAC design
+I keep administrator access separate. Okta Group Rules can't assign users to admin groups, so I need to review and assign admin roles through the administrator controls.
 
-### ABAC: attribute-driven membership
-
-I configured a Finance Group Rule and reviewed Finance membership. The existing screenshot shows four active users and a mix of rule-managed and manually assigned members. The current evidence does not show the rule expression or the profile attribute that drove the rule.
-
-A test rule might use an expression like:
-
-```text
-user.department == "Finance"
-```
-
-This is an example only. I will document the actual expression and use the exact attribute name and value configured in my tenant.
-
-### RBAC: group-to-application access
-
-To demonstrate RBAC end to end, I will assign an access group to a test app and capture the app role or entitlement when the integration supports it. The group membership evidence alone does not prove application access was granted.
-
-### Combined test scenario
-
-1. Set a test user's source profile attribute to Finance.
-2. Confirm the Group Rule evaluates and places the user in the Finance access group.
-3. Assign the Finance access group to a test application with the intended role or entitlement.
-4. Verify that the Finance user receives the expected access.
-5. Test an HR user and verify that the user does not receive Finance group membership or Finance app access.
-6. Change a test user's department and verify that old access is removed and new access is granted.
-
-These end-to-end tests are planned and are not claimed as completed in the current evidence.
-
-## Administrative access
-
-I reviewed standard and custom administrator roles and created custom role definitions for limited responsibilities. To complete the evidence, I still need to show a named test administrator assigned to a custom role and validate both an allowed action and an out-of-scope action.
-
-Group Rules can't be used to assign users to admin groups, so I keep this path separate from attribute-driven workforce access.
-
-## Implementation completed
-
-1. I activated and reviewed the Okta Identity Engine tenant.
-2. I reviewed the Directory, Security, Reports, and System Log areas.
-3. I created department, job-function, location, and administrative groups with descriptions.
-4. I used both rule-managed and manual membership in the Finance group.
-5. I reviewed the resulting Finance group membership.
-6. I compared standard administrator roles with custom administrator roles and created custom role definitions.
-7. I filtered the System Log for successful events.
-
-## Validation record
-
-| Check | Evidence and observed result | Status |
-|---|---|---|
-| Group inventory | The directory screenshot shows groups, descriptions, people counts, and application counts. | Captured |
-| Finance membership | The Finance group screenshot shows four active users and rule-managed plus manual membership. | Captured |
-| Administrator role definitions | Screenshots show standard and custom administrator-role options; custom roles were created. | Captured |
-| System Log overview | The screenshot shows a filtered timeline of successful events. | Captured |
-| ABAC rule logic | Exact expression, target group, and attribute source are not shown in current evidence. | To capture |
-| RBAC app assignment | Group-to-app assignment and app role or entitlement are not shown in current evidence. | To capture |
-| Access decision | Positive Finance and negative HR access results are not shown in current evidence. | To test |
-| Admin assignment | A named admin assigned to the custom role and tested against its scope is not shown. | To capture |
-| Detailed audit event | A specific event's actor, target, type, timestamp, and outcome are not shown. | To capture |
-
-## Existing evidence
+## Screenshots from my lab
 
 ### Group directory
 
 ![Okta group directory](images/01-group-directory.png)
 
-**Evidence:** Group names, descriptions, and directory counts.
+I used this to review the group names, descriptions, and directory counts.
 
 ### Finance group membership
 
 ![Finance group membership](images/02-group-membership.png)
 
-**Evidence:** Four active Finance users and a combination of rule-managed and manual membership.
+I reviewed four active Finance users and saw both rule-managed and manual membership.
 
 ### Standard administrator roles
 
 ![Standard Okta administrator roles](images/03-standard-admin-roles.png)
 
-**Evidence:** Review of Okta's built-in administrator roles.
+I reviewed Okta's standard administrator role options.
 
 ### Custom administrator roles
 
 ![Custom Okta administrator roles](images/04-custom-admin-roles.png)
 
-**Evidence:** Custom role definitions for more limited administrative responsibilities.
+I created and reviewed custom role definitions. This screenshot does not show a test administrator assigned to one of those roles.
 
 ### System Log overview
 
 ![Filtered Okta System Log overview](images/05-system-log-overview.png)
 
-**Evidence:** A filtered view of successful audit activity. The screenshot is an overview; it does not show the full details of a specific event.
+I filtered the event timeline for successful activity. I still need a detailed event screenshot showing the actor, target, event type, timestamp, and outcome.
 
-## Add the next screenshots
+## What I still need to capture
 
-I created a dedicated [RBAC and ABAC screenshot drop area](images/access-control/README.md). It contains a filename checklist for the profile attribute, Group Rule, resulting membership, app assignment, positive and negative access tests, admin role assignment, and detailed System Log event.
+I made an [access-control screenshot checklist](images/access-control/README.md) and a folder for the next screenshots. The main items are:
 
-Keep the existing screenshots in the parent `images/` folder. Add the new access-control evidence under `images/access-control/`, then update the evidence index when each screenshot is captured.
+- The actual Finance Group Rule and the profile attribute it checks.
+- A test user's attribute and resulting Finance group membership.
+- A group-to-app assignment and the role or entitlement, if the app supports it.
+- A positive Finance access test and a negative HR access test.
+- A custom admin role assigned to a test administrator.
+- A detailed System Log event for a group or role change.
 
-## Production design recommendations
-
-- Use an authoritative user-profile attribute as the source for rule-managed membership.
-- Assign an owner and review date to each access-bearing group.
-- Keep manual exceptions documented, approved, and periodically reviewed.
-- Assign app access to groups with clear roles or entitlements where supported.
-- Test allowed and denied access after joiner and mover changes.
-- Test both allowed and denied administrative actions before delegating a role.
-- Review detailed System Log events for access changes and administrator activity.
+I will update this page as I complete those steps. I don't want the project to suggest I tested something until I have the result and screenshot.
 
 ## What I learned
 
-A group architecture becomes more meaningful when it shows both **why** a user enters a group and **what access** that group grants. In this lab, Finance rule-managed and manual membership is documented. The next validation step is to prove the full attribute-to-group-to-application path and record the resulting access decisions.
+Creating groups is only part of the work. I need to show why a user qualifies for a group, what access the group grants, and how I checked the result. The Finance group is a start; testing the rule and an app assignment is the next step.
