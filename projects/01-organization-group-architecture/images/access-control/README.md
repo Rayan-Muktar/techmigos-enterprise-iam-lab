@@ -1,23 +1,25 @@
-# Screenshots I Still Need for RBAC and ABAC
+# RBAC and ABAC Screenshot Drop Area
 
-I made this folder for the next screenshots in my Okta Organization & Group Architecture lab. I will upload each image here after I capture it in my test tenant.
+Add the new screenshots for Project 01 to this folder. Keep the existing screenshots in the parent `images/` folder.
 
-## My screenshot checklist
+## Capture checklist
 
-- [ ] **01-user-profile-attribute.png** — A test user's department or other attribute used by my rule.
-- [ ] **02-group-rule-condition.png** — The actual Finance Group Rule, including its condition, target group, and status.
-- [ ] **03-rule-membership-result.png** — The user's resulting Finance group membership after the rule runs.
-- [ ] **04-rbac-group-app-assignment.png** — The group assigned to a test app and its role or entitlement, if the app supports one.
-- [ ] **05-positive-access-validation.png** — A Finance test user receiving the access I intended.
-- [ ] **06-negative-access-validation.png** — An HR test user without Finance group membership or Finance app access.
-- [ ] **07-mover-access-change.png** — Before-and-after results when I change a test user's department.
-- [ ] **08-admin-role-assignment.png** — A test administrator assigned to a custom role, with the role scope visible.
-- [ ] **09-system-log-event-detail.png** — A group or role change event with actor, target, event type, timestamp, and outcome.
+| Suggested filename | Capture | Status |
+|---|---|---|
+| `01-user-profile-attribute.png` | A test user's relevant profile attribute (for example, department). | Needed |
+| `02-group-rule-condition.png` | The Finance Group Rule condition, target group, and active status. | Needed |
+| `03-rule-membership-result.png` | The resulting Finance group membership after the rule evaluates. | Needed |
+| `04-rbac-group-app-assignment.png` | The access group assigned to a test app, including its app role or entitlement when supported. | Needed |
+| `05-positive-access-validation.png` | A Finance test user receiving the expected app access. | Needed |
+| `06-negative-access-validation.png` | An HR test user not receiving Finance membership or Finance app access. | Needed |
+| `07-mover-access-change.png` | Before-and-after evidence that a department change removes old access and grants the new access. | Recommended |
+| `08-admin-role-assignment.png` | A test administrator assigned a custom role, with the role's scope visible. | Needed |
+| `09-system-log-event-detail.png` | A relevant group or role change event with actor, target, event type, timestamp, and outcome. | Needed |
 
-The rule expression `user.department == "Finance"` is only an example. I will capture the expression and profile attribute that I actually use.
+The expression `user.department == "Finance"` is only an example. Capture the actual rule and actual profile attribute configured in your tenant.
 
-## Before I commit screenshots
+## Safe screenshot handling
 
-I will use simulated test users and redact personal email addresses, user IDs, IP addresses, session data, tenant identifiers, tokens, and secrets. I will keep each screenshot focused on the setting or result it is meant to show.
+Use simulated test users. Redact personal email addresses, user IDs, IP addresses, session data, tenant identifiers, tokens, and secrets before committing screenshots. Keep the screenshot focused on the setting or result being demonstrated.
 
-After I capture an item, I will check it off here and add it to the [screenshot index](../README.md). I will describe a test as complete only after I have run it and saved its result.
+When a screenshot is uploaded, change its status above to **Added** and link it to the evidence index in the parent `images/README.md`. Only describe a test as completed after you have run it and captured the result.
