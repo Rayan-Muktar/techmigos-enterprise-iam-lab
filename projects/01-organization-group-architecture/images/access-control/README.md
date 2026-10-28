@@ -1,25 +1,45 @@
-# RBAC and ABAC Screenshot Drop Area
+# Screenshots from my RBAC and ABAC lab
 
-Add the new screenshots for Project 01 to this folder. Keep the existing screenshots in the parent `images/` folder.
+I’m collecting screenshots from my Okta practice tenant. The screenshots I already have are in the parent `images/` folder. I’ll add the screenshots below as I complete the tests.
 
-## Capture checklist
+### User profile attribute
+`01-user-profile-attribute.png`
 
-| Suggested filename | Capture | Status |
-|---|---|---|
-| `01-user-profile-attribute.png` | A test user's relevant profile attribute (for example, department). | Needed |
-| `02-group-rule-condition.png` | The Finance Group Rule condition, target group, and active status. | Needed |
-| `03-rule-membership-result.png` | The resulting Finance group membership after the rule evaluates. | Needed |
-| `04-rbac-group-app-assignment.png` | The access group assigned to a test app, including its app role or entitlement when supported. | Needed |
-| `05-positive-access-validation.png` | A Finance test user receiving the expected app access. | Needed |
-| `06-negative-access-validation.png` | An HR test user not receiving Finance membership or Finance app access. | Needed |
-| `07-mover-access-change.png` | Before-and-after evidence that a department change removes old access and grants the new access. | Recommended |
-| `08-admin-role-assignment.png` | A test administrator assigned a custom role, with the role's scope visible. | Needed |
-| `09-system-log-event-detail.png` | A relevant group or role change event with actor, target, event type, timestamp, and outcome. | Needed |
+<!-- Paste screenshot here -->
 
-The expression `user.department == "Finance"` is only an example. Capture the actual rule and actual profile attribute configured in your tenant.
+### Finance Group Rule
+`02-group-rule-condition.png`
 
-## Safe screenshot handling
+<!-- Paste screenshot here -->
 
-Use simulated test users. Redact personal email addresses, user IDs, IP addresses, session data, tenant identifiers, tokens, and secrets before committing screenshots. Keep the screenshot focused on the setting or result being demonstrated.
+### Finance group membership after the rule runs
+`03-rule-membership-result.png`
 
-When a screenshot is uploaded, change its status above to **Added** and link it to the evidence index in the parent `images/README.md`. Only describe a test as completed after you have run it and captured the result.
+<!-- Paste screenshot here -->
+
+### Finance group assigned to an app
+`04-rbac-group-app-assignment.png`
+
+<!-- Paste screenshot here -->
+
+### Finance access and HR access check
+`05-positive-access-validation.png` · `06-negative-access-validation.png`
+
+<!-- Paste screenshots here -->
+
+### Department change
+`07-mover-access-change.png`
+
+<!-- Paste screenshot here -->
+
+### Custom admin role assignment
+`08-admin-role-assignment.png`
+
+<!-- Paste screenshot here -->
+
+### System Log event details
+`09-system-log-event-detail.png`
+
+<!-- Paste screenshot here -->
+
+I remove personal details, IP addresses, session data, tenant identifiers, tokens, and secrets before sharing screenshots.
