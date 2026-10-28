@@ -129,22 +129,14 @@ Group Rules can't be used to assign users to admin groups, so I keep this path s
 
 **Evidence:** A filtered view of successful audit activity. The screenshot is an overview; it does not show the full details of a specific event.
 
-## Add the next screenshots
+## RBAC
 
-I created a dedicated [RBAC and ABAC screenshot drop area](images/access-control/README.md). It contains a filename checklist for the profile attribute, Group Rule, resulting membership, app assignment, positive and negative access tests, admin role assignment, and detailed System Log event.
+I understand RBAC as giving access based on a user's role. In my Okta lab, a group can represent that role and be assigned to an app. I reviewed admin roles and created custom role definitions; I still need to capture the group-to-app assignment and show the access it gives.
 
-Keep the existing screenshots in the parent `images/` folder. Add the new access-control evidence under `images/access-control/`, then update the evidence index when each screenshot is captured.
+<!-- Paste the RBAC screenshot here. -->
 
-## Production design recommendations
+## ABAC
 
-- Use an authoritative user-profile attribute as the source for rule-managed membership.
-- Assign an owner and review date to each access-bearing group.
-- Keep manual exceptions documented, approved, and periodically reviewed.
-- Assign app access to groups with clear roles or entitlements where supported.
-- Test allowed and denied access after joiner and mover changes.
-- Test both allowed and denied administrative actions before delegating a role.
-- Review detailed System Log events for access changes and administrator activity.
+I understand ABAC as using details about a user, such as their department, to decide what access they should receive. I configured a Finance Group Rule and reviewed the members, but I still need to capture the exact rule condition and the profile attribute it uses.
 
-## What I learned
-
-A group architecture becomes more meaningful when it shows both **why** a user enters a group and **what access** that group grants. In this lab, Finance rule-managed and manual membership is documented. The next validation step is to prove the full attribute-to-group-to-application path and record the resulting access decisions.
+<!-- Paste the ABAC screenshot here. -->
